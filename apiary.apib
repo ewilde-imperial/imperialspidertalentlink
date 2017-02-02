@@ -1,0 +1,2386 @@
+FORMAT: 1A
+HOST: spider-api-url.rackspace.com
+
+# Spider Talentlink API Interface (draft v0.6)
+
+This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
+
+When a page containing a recruitment element is called, PHP running on the production server will make a cURL request to the Spider API requesting the HTML content to be included in the output.
+
+Once the page is rendered server-side and sent back to the browser, any user element interaction will cause the client-side code to request updates using JSON which will be rendered to the browser DOM.
+
+All API requests are prefixed with _/v1/_ to determine API version number, in future any new or modified responses can be added and the corresponding version url depreciated.
+
+# Group Filters
+API requests for filling static content, dependent on values from within the Talentlink system.
+
+## Populate Filters [/v1/fetch/filters/?filter={filter_name}]
+For each filter group, a list of available options must be retrieved from the server.
+
++ Parameters
+
+    + filter_name: `location` (string, required) - the type of filter to get options for.
+   
+### Retrieve Filters [GET]
+Retrieve a list of values to be used in the search filter select boxes. Values listed here are for demonstration purposes, so can be changed depending on implentation.
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <option value="0">Charing Cross</option>
+            <option value="1">Chelsea and Westminster</option>
+            <option value="2">Hammersmith</option>
+            <option value="3">North West London Hospitals</option>
+            <option value="4">Royal Brompton</option>
+            <option value="5">Silwood Park</option>
+            <option value="6">South Kensington</option>
+            <option value="7">St Mary's</option>
+            <option value="8">White City</option>
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** This is caused by the user requesting the resource with a parameter which cannot be handled, either becuase it doesnt exist or is of the incorrect type.
+
+    + Body
+    
+        ```html
+            <!-- error: bad request - no matching filter -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+    
+            Accept: application/json
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {  
+                "meta":{
+                    "results":9,
+                    "param":{
+                        "filter_name":"location"
+                    }
+                },
+                "data":[
+                    {
+                        "id":0,
+                        "name":"Charing Cross"
+                    },{
+                        "id":1,
+                        "name":"Chelsear and Westminster"
+                    },{
+                        "id":2,
+                        "name":"Hammersmith"
+                    },{
+                        "id":3,
+                        "name":"North West London Hospitals"
+                    },{
+                        "id":4,
+                        "name":"Royal Brompton"
+                    },{
+                        "id":5,
+                        "name":"Silwood Park"
+                    },{
+                        "id":6,
+                        "name":"South Kensington"
+                    },{
+                        "id":7,
+                        "name":"St Mary's"
+                    },{
+                        "id":8,
+                        "name":"White City"
+                    },{
+                        "id":9,
+                        "name":"Non-UK"
+                    }
+                ]
+            }
+            
++ Response 400 (application/json)
+**400 Error: bad request.** This is caused by the user requesting the resource with a parameter which cannot be handled, either becuase it doesnt exist or is of the incorrect type.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "filter_name":"doesntexist"
+                    }
+                },
+                "data":{
+                    "response":"bad request",
+                    "blame":["filter_name"],
+                    "message":"no matching filter"
+                }
+            }
+
+# Group Listing
+This API handles the vacancy listings and provides a flexible mechanism for displaying vacancies accross the site, not just in the recruitment section.
+
+## Jobs [/v1/job/]
+
+### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
+This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced.
+
+#### Examples
+
+##### Search for web development jobs in South Kensington or Silwood Park
+```
+/v1/job/listing/?keywords=web+development&location[]=6&location[]=5
+```
+
+##### Search for jobs which pay more than £50,000 outside of the uk, sorted by top paying
+```
+/v1/job/listing/?location[]=9&salary_min=50000&sort_by=salary&sort_order=desc
+```
+
+##### Retrieve a saved search result
+```
+/v1/job/listing/?alert_id=424442
+```
+
++ Parameters
+
+    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields. Multiple terms seperated by '+' e.g. `senior+lecturer` and should be treated as using AND logic.
+    + location: `2` (array, optional) - the selected filter option value(s) for location.
+    + category: `0` (array, optional) - the selected filter option value(s) for category.
+    + subcategory: `5` (array, optional) - the selected filter options value(s) for subcategory.
+    + contract: `2` (array, optional) - the selected filter options value(s) for contract.
+    + salary_min: `20000` (number, optional) - the selected filter options value(s) for the salary range minimum.
+    + salary_max: `60000` (number, optional) - the selected filter options value(s) for the salary range maximum.
+    + department: `1` (array, optional) - the department by which to filter search results.
+    + start: `0` (number, optional) - the numeric indicator of which record should be returned first. For example the first result would be `0`, tenth result would be `9`, first result in the third page would be `30` assuming 15 results per page.
+        + Default: `0`
+    + quantity: `30` (number, optional) - the number of results to return. _(maximum 50)_
+        + Default: `15`
+    + sort_by: `salary` (enum[string], optional) - the selected sort option value.
+        + Default: `date-posted`
+        + Members
+            + `date-posted`
+            + `closing-date`
+            + `salary`
+    + sort_order: `asc` (enum[string], optional) - the order by which to sort results
+        + Default: `desc`
+        + Members
+            + `asc`
+            + `desc`
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain in response code.
+        + Default: `https://www.imperial.ac.uk/jobs`
+    + alert_id: `424442` (number, optional) - the saved search / job alert id, to be used instead of filters
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <li class="imperial_single_result job" data-id="<!-- insert job id here, used for saving/appling -->">
+                <div class="row">
+                    <h3 class="job-title"><!-- insert job title here --></h3>
+                    <div class="job-description">
+                        <div class="job-summary">
+                            <p><!-- insert job summary here (450 characters max), adding ellipsis when truncated --></p>
+                        </div>
+                        <div class="job-more-information">
+                            <a href="{root_url}<!--insert relative job url here-->" class="job-link">More information</a>
+                        </div>
+                    </div>
+                    <div class="job-information">
+                        <ul>
+                            <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert job reference/id here --></span></li>
+                            <li class="close-date"><span class="label">Closing date: </span><span class="value"><!-- insert job closing date here --></span></li>
+                            <li class="department"><span class="label">Department: </span><span class="value"><!-- insert category here --></span></li>
+                            <li class="location"><span class="label">Location: </span><span class="value"><!-- insert location here --></span></li>
+                            <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert contract type here --></span></li>
+                            <li class="salary"><span class="label">Salary: </span><span class="value"><!-- insert salary range here --></span></li>
+                        </ul>
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn reverse">Save this job</button>
+                        <button class="btn">Apply now</button>
+                    </div>
+                </div>
+            </li>
+            <!-- above code repeated for each result -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** This is caused by a request containing parameters which the server is not expecting.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 17 February 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+            
+            {
+                "meta":{
+                    "results":2,
+                    "param": {
+                        "keywords":"lecturer",
+                        "location":[2],
+                        "category":[0],
+                        "subcategory":[5],
+                        "contract":[2],
+                        "salary_min":20000,
+                        "salary_max":60000,
+                        "department":[1],
+                        "start":0,
+                        "quantity":2,
+                        "sort_by":"salary",
+                        "sort_order":"asc"
+                    }
+                },
+                "data":[
+                    {
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here e.g. EX123456/job-title/ */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "department":"/* insert job department string here */",
+                        "location":"/* insert job location here */",
+                        "type":"/* insert job type here */",
+                        "salary":"/* insert job salary range here */",
+                        "category":"/* insert job category here */",
+                        "subcategory":"/* insert job subcategory here */"
+                    },{
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "department":"/* insert job department string here */",
+                        "location":"/* insert job location here */",
+                        "type":"/* insert job type here */",
+                        "salary":"/* insert job salary range here */",
+                        "category":"/* insert job category here */",
+                        "subcategory":"/* insert job subcategory here */"
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** This is caused by a request containing parameters which the server is not expecting.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "keywords":"lecturer",
+                        "location":[2],
+                        "category":[0],
+                        "subcategory":[5],
+                        "contract":[2],
+                        "salary_min":20000,
+                        "salary_max":60000,
+                        "department":[1],
+                        "start":0,
+                        "quantity":2,
+                        "sort_by":"salary",
+                        "sort_order":"doesntexist"
+                    }
+                },
+                "data":{
+                    "response":"bad request",
+                    "message":"sort_order does not match expected value"],
+                    "blame":["sort_order"]
+                }
+            }
+    
+### Retrieve job details [GET /v1/job/details/?id={id}&root_url={root_url}]
+This is used to fetch the full job descriptions and other detail for a particular job.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the unique id for the job listing
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain in response code
+        + Default: `https://www.imperial.ac.uk/jobs`
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 17 Febuary 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** The requested job id does not exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 17 Febuary 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":1,
+                    "param":{
+                        "id":"EX12345",
+                        "root_url":"http://wwwtest.imperial.ac.uk/jobs"
+                    }
+                },
+                "data":[
+                    {
+                        "id":"EX12345",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert job reference here, if different to job id */",
+                        "close_date":"/* insert job close date here */",
+                        "department":"/* insert job department here */",
+                        "location":"/* insert job location here */",
+                        "type":"/* insert job type here */",
+                        "salary":"/* insert job salary range here */",
+                        "category":"/* insert job category here */",
+                        "subcategory":"/* insert job subcategory here */",
+                        "description":"/* insert full job description here */",
+                        "attachments":[{
+                            "name":"document1.doc",
+                            "type":" application/msword"
+                            "size":1048576
+                            "url":"/EX12345/example-job-title/document1.doc"
+                        },{
+                            "name":"document2.doc",
+                            "type":" application/msword"
+                            "size":2097152
+                            "url":"/EX12345/example-job-title/document2.doc"
+                        }],
+                        "status":"active" // other statuses ['expired', 'closed', 'temporarily closed', 'talantlink offline']
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** The requested job id does not exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX123450"
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+    
+        
+
+# Group Authenticated
+These API functions relate to the account creation process or require the user to be logged in with a valid session/cookie. 
+
+## Login [/v1/account/login/]
+Retrieve the details required for the user to securely login to their account.
+
+### Retrieve authentication [POST /v1/account/login/?email={email}&password={password}]
+Allow the user to authenticate against either SAML or talentlink, depending on the email address used.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user.
+    + password: `password123` (string, required) - the password for the user
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+
++ Response 200 (text/html)
+
+    + Headers
+    
+            Set-Cookie: RecruitmentAuthentication=<cookie-value>; Secure; HttpOnly;
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint with incorrect credentials
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
+### Retrieve account activation [GET /v1/account/login/?email={email}&token={token}]
+When the user has created a new account, they are sent an email authentication link. This request handles the email address activation.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user.
+    + token: `<tbc>` (string, required) - an encrypted hash of the email address, to verify the user clicked a link generated by the server.
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint with an invalid token or email address.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 409 (text/html)
+**409 Error: conflict.** If a call is made to this endpoint when the account with this email address is already active
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
+## Account [/v1/account/]
+This is the API for user-level account management.
+
+### Retrieve account details [GET /v1/account/details/?email={email}]
+List the stored account details for the currently logged in user.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** A request has been made to list details for a non-existant or deleted account.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                    }
+                },
+                "data":{
+                    "email":"e.wilde@imperial.ac.uk",
+                    "firstname":"Ed",
+                    "lastname":"Wilde",
+                    "question":"Favourite colour?",
+                    "answer":"Imperial blue"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"f.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+
+
+### Create new account [POST /v1/account/create/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}]
+Create a new user account with the minimum required fields.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user.
+    + password: `password` (string, required) - the password to use for this account.
+    + confirmation: `password` (string, required) - the confirmation of the password for this account.
+    + firstname: `Ed` (string, required) - the user's forename.
+    + lastname: `Wilde` (string, required) - the user's surname.
+    + question: `Favourite colour?` (string, required) - a security question for the user to verify their account.
+    + answer: `Imperial blue` (string, required) - the answer to the security question.
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 409 (text/html)
+**409 Error: conflict.** Conflict error returned when the user's email already exists in the system.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+    
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "password":"password",
+                        "confirmation":"password",
+                        "firstname":"Ed",
+                        "lastname":"Wilde",
+                        "question":"Favourite colour?",
+                        "answer":"Imperial blue"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wildeimperial.ac.uk",
+                        "password":"password",
+                        "confirmation":"password",
+                        "firstname":"Ed",
+                        "lastname":"",
+                        "question":"Favourite colour?",
+                        "answer":"Imperial blue"
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "message":"fields failed validation",
+                    "blame":[
+                        "email",
+                        "lastname"
+                    ]
+                }
+            }
+
++ Response 409 (application/json)
+**409 Error: conflict.** Conflict error returned when the user's email already exists in the system.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "password":"password",
+                        "confirmation":"password",
+                        "firstname":"Ed",
+                        "lastname":"Wilde",
+                        "question":"Favourite colour?",
+                        "answer":"Imperial blue"
+                    }
+                },
+                "data":{
+                    "response":"conflict",
+                    "message":"account already exists"
+                }
+            }
+
+### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
+Make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily.
+
+#### Examples
+
+##### Change the accounts preferred phone number
+```
+/v1/account/edit/?email=e.wilde@imperial.ac.uk&phone=0987654321
+```
+
+##### Remove the accounts linkedin address and change the last name
+```
+/v1/account/edit/?email=e.wilde@imperial.ac.uk&linkedin=&lastname=Smith
+```
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+    + password: `password` (string, optional) - the password to use for this account.
+    + confirmation: `password` (string, optional) - the confirmation of the password for this account.
+    + firstname: `Ed` (string, optional) - the users forename.
+    + lastname: `Wilde` (string, optional) - the users surname.
+    + question: `Favourite colour?` (string, optional) - a security question for the user to verify their account.
+    + answer: `Imperial blue` (string, optional) - the answer to the security question.
+    + phone: `01234567890` (string, optional) - the preferred phone number for the account
+    + phone_alt: `01234567890` (string, optional) - the alternative phone number for the account
+    + skype: `edwilde` (string, optional) - a skype username for the user
+    + address1: `Imperial College London` (string, optional) - first line of the users address
+    + address2: `South Kensington` (string, optional) - the second line of the address
+    + address3: `Exhibition Road` (string, optional) - the third line of the address
+    + city: `London` (string, optional) - the users city
+    + postcode: `SW7 2AZ` (string, optional) - the users postcode
+    + country: `United Kingdom` (string, optional) - the users country
+    + linkedin: `https://uk.linkedin.com/in/edwilde`(string, optional) - the users linkedin profile address
+    + xing: `https://www.xing.com/profile/edwilde` (string, optional) - the users xing profile address
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "password":"password",
+                        "confirmation":"password",
+                        "firstname":"Ed",
+                        "lastname":"Wilde",
+                        "question":"Favourite colour?",
+                        "answer":"Imperial blue",
+                        "phone":"01234567890",
+                        "phone_alt":"01234567890",
+                        "skype":"edwilde",
+                        "address1":"Imperial College London",
+                        "address2":"South Kensington",
+                        "address3":"Exhibition Road",
+                        "city":"London",
+                        "postcode":"SW7 2AZ",
+                        "country":"United Kingdom",
+                        "linkedin":"https://uk.linkedin.com/in/edwilde",
+                        "xing":"https://www.xing.com/profile/edwilde"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wildeimperial.ac.uk",
+                        "password":"password",
+                        "confirmation":"password",
+                        "firstname":"Ed",
+                        "lastname":"",
+                        "question":"Favourite colour?",
+                        "answer":"Imperial blue"
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "message":"fields failed validation",
+                    "field":[
+                        "email",
+                        "lastname"
+                    ]
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"f.wilde@imperial.ac.uk",
+                        "question":"Favourite colour?",
+                        "answer":"Normal blue"
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                    "message":"this account doesn't exist or has been deleted"
+                }
+            }
+            
+### Delete account [DELETE /v1/account/remove/?email={email}]
+Remove the account and any linked data from talentlink. Any open applications should be deleted as part of the process.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+
++ Request HTML Message
+    
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+        
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+        
++ Response 404 (text/html)
+**404 Error: not found.** If a request is made to remove a non-existant or already deleted account.
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 500 (application/json)
+If a request is made and cannot be fulfilled by talentlink due to poor connectivity, error during processing etc.
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+        
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made to remove a non-existant or already deleted account.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"f.wilde@imperial.ac.uk",
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+
++ Response 500 (application/json)
+If a request is made and cannot be fulfilled by talentlink due to poor connectivity, error during processing etc.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                    }
+                },
+                "data":{
+                    "response":"internal server error",
+                    "message":"there are communication problems between the application and talentlink"
+                }
+            }
+
+### Create new password request [POST /v1/account/reset_password/?email={email}]
+Allow the user to request a password reset url delivered to their email address.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+    
+    + Body
+
+        ```html
+            <!-- to be confirmed by 24 Febuary 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made to reset password for a non-existant or deleted account.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"f.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+
+## Application [/v1/application/]
+This is the API for managing job applications. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+
+### Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/]
+Fetch a listing of incomplete job applications. Ordered by job status, closing date (asc)
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+    
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":1
+                },
+                "data":[
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */",
+                    }
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
+### Retrieve a list of submitted applications [GET /v1/application/listing-submitted/]
+Fetch a listing of submitted job applications. Ordered by last updated (desc).
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":2
+                },
+                "data":[
+                    {
+                        "date_modified":"/* insert date application was submitted here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */",
+                    },
+                    {
+                        "date_modified":"/* insert date application was submitted here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */",
+                    }
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
+### Create a new application process [POST /v1/application/form/?id={id}&edit={edit}]
+Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the Spider id for the job listing
+    + edit: `true` (boolean, optional) - flag to show whether this is an edit to an existing application
+        + Default: `false`
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+        
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** If a request is made for a job which does not exist.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
+### Retrieve application progress [GET /v1/application/progress/?id={id}]
+Fetch the sidebar navigation for the application process.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the Spider id for the job listing
+
++ Request HTML Message
+
+    + Headers
+    
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+        
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** If a request is made for a job which does not exist.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":5,
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "steps":[
+                        {
+                            "name":"personal-details",
+                            "title":"Personal details",
+                            "url":"application/step-1-of-5/",
+                            "active":false
+                        },{
+                            "name":"application-form",
+                            "title":"Application form",
+                            "url":"application/step-2-of-5/",
+                            "active":true
+                        },{
+                            "name":"cover-letter",
+                            "title":"Cover letter",
+                            "url":"application/step-3-of-5/",
+                            "active":false
+                        },{
+                            "name":"diversity-questionnaire",
+                            "title":"Diversity questionnaire",
+                            "url":"application/step-4-of-5/",
+                            "active":false
+                        },{
+                            "name":"review-and-submit",
+                            "title":"Review and submit",
+                            "url":"application/step-5-of-5/",
+                            "active":false
+                        }
+                    ]
+                }
+            }
+
+        
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made for a job which does not exist.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"This id doesnt exist"
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                }
+            }
+
+### Delete an application [DELETE /v1/application/remove/?talentlink_id={talentlink_id}]
+Remove an existing job application from the system.
+
++ Parameters
+
+    + talentlink_id: `1153584324455-3` (string, required) - the talentlink id for the job listing
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** The job which is requested doesnt exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "talentlink_id":"1153584324455-3"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "talentlink_id":"1153584324455-3"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** The job which is requested doesnt exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "talentlink_id":"This id doesnt exist"
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                }
+            }
+
+## Saved Jobs [/v1/saved/]
+The API for managing a users saved jobs. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+
+### Retrieve list of saved open jobs [GET /v1/saved/listing-open/]
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":2
+                },
+                "data":[
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+            
+### Retrieve list of saved closed jobs [GET /v1/saved/listing-closed/]
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":2
+                },
+                "data":[
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
+### Retrieve list of saved expired jobs [GET /v1/saved/listing-expired/]
+Fetch a list of the saved jobs for a particular user. 
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":2
+                },
+                "data":[
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                    {
+                        "date_modified":"/* insert date job was last changed here */",
+                        "id":"/* insert Spider job id here */",
+                        "title":"/* insert job title here */",
+                        "summary":"/* insert job summary here */",
+                        "url":"/* insert relative url here */",
+                        "reference":"/* insert Imperial job reference here */",
+                        "close_date":"/* insert job close date here */",
+                        "talentlink_id":"/* insert id from talentlink here */"
+                    },
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
+### Save job [POST /v1/saved/save/?id={id}]
+The user has clicked the save job button, add the job to the users saved jobs in their account.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the unique id for the job listing
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** The job doesn't exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** The id for the job does not exist, or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"This id doesnt exist"
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                }
+            }
+
+### Delete saved job [DELETE /v1/saved/?id={id}]
+Remove a link to a saved job vacancy on the users account.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the unique id for the job listing
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+        
++ Response 404 (text/html)
+**404 Error: not found.** A call is made to remove a job which doesnt exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"EX12345"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+            
++ Response 404 (application/json)
+**404 Error: not found.** A call is made to remove a job which doesnt exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "id":"This id doesnt exist"
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                }
+            }
+
+## Job alerts / Saved searches [/v1/alerts/]
+The API for managing a users job alerts / saved searches. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+
+### Retrieve list of job alerts / saved searches [GET /v1/alerts/listing/]
+Fetch a list of job alerts and/or saved searches. The response will show all for a particular user by default, however it can be filtered by the frequency of emails. The frequency value of 'none' is used for saved searches. For the listing requests, the basic job information is also returned to reduce the number of calls to the API. Results should be ordered by frequency then alert_id (desc) so new alerts appear first.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 7 April 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 7 April 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "results":3
+                },
+                "data":[
+                {
+                        "alert_id":"123455",
+                        "alert_name":"/* insert job alert name here */",
+                        "frequency":"none",
+                        "filter":{
+                            "keywords":"lecturer",
+                            "location":[2],
+                            "category":[0],
+                            "subcategory":[5],
+                            "contract":[2],
+                            "salary_min":20000,
+                            "salary_max":60000,
+                            "department":[1]
+                        }
+                    },
+                    {
+                        "alert_id":"123456",
+                        "alert_name":"/* insert job alert name here */",
+                        "frequency":"daily",
+                        "filter":{
+                            "keywords":"senior+lecturer",
+                            "location":[2, 7],
+                            "salary_min":50000
+                        }
+                    },
+                    {
+                        "alert_id":"123457",
+                        "alert_name":"/* insert job alert name here */",
+                        "frequency":"monthly",
+                        "filter":{
+                            "category":[0, 1, 5],
+                            "subcategory":[5],
+                            "salary_min":20000
+                        }
+                    }
+                ]
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "frequency":"daily",
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
+### Create new job alert / saved search [POST /v1/alerts/create/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+Add a new job alert or saved search to the users account. It is assumed that the recipient email address will be the one stored by the system.
+
+#### Example
+
+##### Create the example weekly job alert
+```
+/v1/alerts/create/?keywords=lecturer&location[]=2&location[]=5&salary_min=40000&salary_max=100000&name=lecturer+jobs+in+Hammersmith+or+Silwood+Park&frequency=weekly
+```
+
++ Parameters
+
+    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields.
+    + location: `[2, 5]` (number/array, optional) - the selected filter option value(s) for location.
+    + category: `` (number/array, optional) - the selected filter option value(s) for category.
+    + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
+    + contract: `` (number/array, optional) - the selected filter options value(s) for contract.
+    + salary_min: `40000` (number, optional) - the selected filter option value for minimum salary.
+    + salary_max: `100000` (number, optional) - the selected filter option value for maximum salary.
+    + name: `lecturer jobs in Hammersmith or Silwood Park` (string, required) - the name of the job alert.
+    + frequency: `weekly` (string, optional) - how often to send the email alert. Default is to not send email, creating a saved search instead.
+        + Default: `none`
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 409 (text/html)
+**409 Error: conflict.** Conflict error returned when the search alert already exists for this user.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "keywords":"lecturer",
+                        "name":"lecturer jobs in Hammersmith or Silwood Park",
+                        "location":[2, 5],
+                        "salary_min":40000,
+                        "salary_max":100000,
+                        "frequency":"weekly"
+                    }
+                },
+                "data":{
+                    "response":"success",
+                    "alert_id":"1234568"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "keywords":"lecturer",
+                        "name":"lecturer jobs in Hammersmith or Silwood Park",
+                        "location":[2, 5, 100],
+                        "salary_min":40000,
+                        "salary_max":10000,
+                        "frequency":"weekly"
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "field":[
+                        "salary"
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "keywords":"lecturer",
+                        "name":"lecturer jobs in Hammersmith or Silwood Park",
+                        "location":[2, 5],
+                        "salary_min":40000,
+                        "salary_max":100000,
+                        "frequency":"weekly"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 409 (application/json)
+**409 Error: conflict.** Conflict error returned when the search alert already exists for this user.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "keywords":"lecturer",
+                        "name":"lecturer jobs in Hammersmith or Silwood Park",
+                        "location":[2, 5],
+                        "salary_min":40000,
+                        "salary_max":100000,
+                        "frequency":"weekly"
+                    }
+                },
+                "data":{
+                    "response":"conflict"
+                }
+            }
+
+### Edit a job alert / saved search [POST /v1/alerts/edit/?alert_id={alert_id}&keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+Make amendments to a job alert or saved search. Optional fields can be sent in isolation to avoid updating other fields unnecessarily.
+
+#### Example
+
+##### Modify the frequency of a saved search from weekly emails to none
+```
+/v1/alerts/edit/?alert_id=123456&frequency=none
+```
+
+##### Modify the salary bounds for a job alert
+```
+/v1/alerts/edit/?alert_id=123457&salary_min=10000&salary_max=1000000
+```
+
++ Parameters
+
+    + alert_id: `123456` (number, required) - the id of the alert/saved search
+    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields.
+    + location: `2` (number/array, optional) - the selected filter option value(s) for location.
+    + category: `` (number/array, optional) - the selected filter option value(s) for category.
+    + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
+    + contract: `` (number/array, optional) - the selected filter options value(s) for contract.
+    + salary_min: `20000` (number, optional) - the selected filter option value for minimum salary.
+    + salary_max: `60000` (number, optional) - the selected filter option value for maximum salary.
+    + name: `lecturer jobs in Hammersmith` (string, optional) - the name of the job alert.
+    + frequency: `daily` (string, optional) - how often to send the email alert. Default is to not send email, creating a saved search instead.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** If the alert does not exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123458",
+                        "name":"lecturer jobs in Hammersmith",
+                        "location":[2],
+                        "salary_min":40000,
+                        "salary_max":100000
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123458",
+                        "salary_min":40000,
+                        "salary_max":20000
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "field":[
+                        "salary"
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123458",
+                        "name":"lecturer jobs in Hammersmith",
+                        "location":[2]
+                        "salary_min":40000,
+                        "salary_max":100000
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If the alert does not exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"9999",
+                        "name":"lecturer jobs in Hammersmith",
+                        "location":[2]
+                        "salary_min":40000,
+                        "salary_max":100000
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+
+### Delete job alert [DELETE /v1/alerts/remove/?alert_id={alert_id}]
+Remove an existing job alert or saved search.
+
++ Parameters
+
+    + alert_id: `123456` (number, optional) - the id of the alert/saved search
+    
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            Cookie: authentication token
+            
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** If the job alert or saved search does not exist or has been deleted.
+
+    + Body
+    
+        ```html
+            <!-- to be confirmed by 31 March 2017 -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            Cookie: authentication token
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123456"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123456"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If the job alert or saved search does not exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123456"
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
