@@ -27,7 +27,7 @@ Retrieve a list of values to be used in the search filter select boxes. Values l
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
 
 + Response 200 (text/html)
@@ -58,7 +58,7 @@ Retrieve a list of values to be used in the search filter select boxes. Values l
 + Request JSON Message
 
     + Headers
-    
+
             Accept: application/json
             
 + Response 200 (application/json)
@@ -433,13 +433,13 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
 
 + Response 200 (text/html)
 
     + Headers
-    
+
             Set-Cookie: RecruitmentAuthentication=<cookie-value>; Secure; HttpOnly;
 
     + Body
@@ -468,7 +468,7 @@ When the user has created a new account, they are sent an email authentication l
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
 
 + Response 200 (text/html)
@@ -510,7 +510,7 @@ List the stored account details for the currently logged in user.
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
             
 + Response 200 (text/html)
@@ -614,7 +614,7 @@ Create a new user account with the minimum required fields.
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
             
 + Response 200 (text/html)
@@ -646,7 +646,7 @@ Create a new user account with the minimum required fields.
 + Request JSON Message
 
     + Headers
-    
+
             Accept: application/json
 
 + Response 200 (application/json)
@@ -720,7 +720,7 @@ Create a new user account with the minimum required fields.
                 }
             }
 
-### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
+### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&prefix={prefix}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
 Make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily.
 
 #### Examples
@@ -740,6 +740,7 @@ Make amendments or additions to stored account information. Optional fields may 
     + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
     + password: `password` (string, optional) - the password to use for this account.
     + confirmation: `password` (string, optional) - the confirmation of the password for this account.
+    + prefix: `Mr` (string, optional) - the users prefix/title
     + firstname: `Ed` (string, optional) - the users forename.
     + lastname: `Wilde` (string, optional) - the users surname.
     + question: `Favourite colour?` (string, optional) - a security question for the user to verify their account.
@@ -805,6 +806,7 @@ Make amendments or additions to stored account information. Optional fields may 
                         "email":"e.wilde@imperial.ac.uk",
                         "password":"password",
                         "confirmation":"password",
+                        "prefix":"Mr",
                         "firstname":"Ed",
                         "lastname":"Wilde",
                         "question":"Favourite colour?",
