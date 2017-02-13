@@ -1889,7 +1889,7 @@ Remove a link to a saved job vacancy on the users account.
 The API for managing a users job alerts / saved searches. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
 
 ### Retrieve list of job alerts / saved searches [GET /v1/alerts/listing/]
-Fetch a list of job alerts and/or saved searches. The response will show all for a particular user by default, however it can be filtered by the frequency of emails. The frequency value of 'none' is used for saved searches. For the listing requests, the basic job information is also returned to reduce the number of calls to the API. Results should be ordered by frequency then alert_id (desc) so new alerts appear first.
+Fetch a list of job alerts and/or saved searches. For the listing requests, the basic job information is also returned to reduce the number of calls to the API. Results should be ordered by frequency then alert_id (desc) so new alerts appear first.
 
 + Request HTML Message
 
@@ -1975,11 +1975,7 @@ Fetch a list of job alerts and/or saved searches. The response will show all for
     + Body
     
             {
-                "meta":{
-                    "param":{
-                        "frequency":"daily",
-                    }
-                },
+                "meta":{},U
                 "data":{
                     "response":"unauthorised"
                 }
