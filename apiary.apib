@@ -206,7 +206,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                             <p><!-- insert job summary here (450 characters max), adding ellipsis when truncated --></p>
                         </div>
                         <div class="job-more-information">
-                            <a href="{root_url}<!--insert relative job url here-->" class="job-link">More information</a>
+                            <a href="{root_url}<!-- insert relative job url here - /jobs/description/ex12345/job-title -->" class="job-link">More information</a>
                         </div>
                     </div>
                     <div class="job-information">
@@ -234,7 +234,17 @@ This is the main API request for searching, filtering and sorting jobs. It will 
     + Body
     
         ```html
-            <!-- to be confirmed by 17 February 2017 -->
+            <li class="imperial_single_result job error">
+                <div class="row">
+                    <h3 class="job-title">Sorry, there was a problem with your search</h3>
+                    <div class="job-description">
+                        <div class="job-summary">
+                            <p>The server is unable to handle one or more of the filters you have chosen.</p>
+                            <p>Please choose your filters again using the options above.</p>
+                        </div>d 
+                    </div>
+                </div>
+            </li>
         ```
 
 + Request JSON Message
