@@ -430,7 +430,27 @@ This is used to fetch the full job descriptions and other detail for a particula
     + Body
     
         ```html
-            <!-- to be confirmed by 17 Febuary 2017 -->
+            <div class="col lg-12 page-heading">
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="/">Imperial Home</a></li>
+                        <li><a href="/jobs">Jobs</a></li>
+                        <li>404 - Not found</li>
+                    </ul>
+                </div>
+                <h1>Sorry, the job you are looking for is no longer available</h1>
+            </div>
+
+            <div class="module job-description">
+
+                <div class="summary">
+                    <p>Suggestions:</p>
+                    <ul>
+                        <li><a href="/jobs">Return to homepage</a></li>
+                        <li><a href="/jobs/search">Search for another job</a></li>
+                    </ul>
+                </div>
+            </div>
         ```
 
 + Request JSON Message
