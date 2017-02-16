@@ -355,7 +355,66 @@ This is used to fetch the full job descriptions and other detail for a particula
     + Body
     
         ```html
-            <!-- to be confirmed by 17 Febuary 2017 -->
+            <div class="col lg-12 page-heading">
+                <h1>Job title</h1>
+            </div>
+
+            <div class="module job-description" itemscope itemtype="http://schema.org/JobPosting">
+                <meta itemprop="title" content="<!-- insert job title here -->">
+
+                <!-- begin call to action area -->
+                <div class="highlight">
+                    <a href="/jobs/account/application/?action=apply&id=<!-- insert job id here -->" class="btn">Apply now</a>
+                    <a href="/jobs/account/saved-jobs/?action=save&id=<!-- insert job id here -->" class="btn reverse">Save this job</a>
+                </div>
+                <!-- end call to action area -->
+
+                <!-- begin job summary area -->
+                <div class="summary">
+                    <h2 class="sr-only">Job summary</h2>
+                    <p>
+                        <!-- insert job summary here -->
+                    </p>
+                </div>
+                <!-- end job summary area -->
+
+                <!-- begin vacancy listing information -->
+                <div class="listing-info">
+                    <h2 class="sr-only">Job listing information</h2>
+                    <ul>
+                        <li class="data reference"><span class="label">Reference</span> <span class="value"><!-- insert Imperial job reference here --></span></li>
+                        <li class="data closing"><span class="label">Closing date</span> <span class="value" itemprop="validThrough"><!-- insert closing date here (php date format 'j F Y') --></span></li>
+                    </ul>
+                </div>
+                <!-- end vacancy listing information -->
+
+                <!-- begin job information banner -->
+                <div class="row info job-info banner">
+                    <h2 class="sr-only">Key information about the role</h2>
+                    <ul class="column">
+                        <li class="data location" itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"><span class="label">Location</span> <span class="value" itemprop="address"><!-- insert location address here --></span> <a class="map" itemprop="hasMap" href="https://www.google.co.uk/maps/search/<!-- insert url encoded location address here -->/">(map)</a></li>
+                    </ul>
+                    <ul class="column">
+                        <li class="data contract"><span class="label">Position type</span> <span class="value" itemprop="employmentType">Full time</span></li>
+                        <li class="data salary">
+                            <span class="label">Salary</span> <span class="value" itemprop="baseSalary"><!-- insert salary range here --></span>
+                            <span class="benefits">plus&nbsp;<a class="benefits" href="/job-applicants/staff-benefits/">benefits</a></span>
+                            <meta itemprop="salaryCurrency" content="GBP">
+                        </li>
+                    </ul>
+                    <ul class="row">
+                        <li class="data department"><span class="label">Department</span> <span class="value"><a href="<!-- insert department link / lookup here -->" target="_blank"><!-- insert department here --></a></li>
+                        <li class="data category"><span class="label">Category</span> <span class="value" itemprop="occupationalCategory"><!-- insert category here --> / <!-- insert subcategory here --></span></li>
+                    </ul>
+                </div>
+                <!-- end job information banner -->
+
+
+                <div class="wysiwyg job-content" itemprop="description">
+                    <h2>Job description</h2>
+                    <!-- insert full job description here -->
+                </div>
+            </div>
         ```
 
 + Response 404 (text/html)
