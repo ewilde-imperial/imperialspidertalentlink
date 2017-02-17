@@ -206,7 +206,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                             <p><!-- insert job summary here (450 characters max), adding ellipsis when truncated --></p>
                         </div>
                         <div class="job-more-information">
-                            <a href="{root_url}<!-- insert relative job url here - /jobs/description/ex12345/job-title -->" class="job-link">More information</a>
+                            <a href="<!-- insert root_url parameter here -->/description/<!-- insert Imperial job id here -->/<!-- insert shortened, url friendly job title here -->" class="job-link">More information</a>
                         </div>
                     </div>
                     <div class="job-information">
@@ -220,8 +220,8 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         </ul>
                     </div>
                     <div class="job-actions">
-                        <button class="btn reverse">Save this job</button>
-                        <button class="btn">Apply now</button>
+                        <a href="<!-- insert root_url parameter here -->/account/saved-jobs/?action=save&id=<!-- insert job id here -->" class="btn reverse">Save this job</a>
+                        <a href="<!-- insert root_url parameter here -->/account/application/?action=apply&id=<!-- insert job id here -->" class="btn">Apply now</a>
                     </div>
                 </div>
             </li>
@@ -359,7 +359,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                 <div class="breadcrumbs">
                     <ul>
                         <li><a href="/">Imperial Home</a></li>
-                        <li><a href="/jobs">Jobs</a></li>
+                        <li><a href="<!-- insert root_url parameter here -->">Jobs</a></li>
                         <li><!-- insert job title here --></li>
                     </ul>
                 </div>
@@ -371,8 +371,8 @@ This is used to fetch the full job descriptions and other detail for a particula
 
                 <!-- begin call to action area -->
                 <div class="highlight">
-                    <a href="/jobs/account/application/?action=apply&id=<!-- insert job id here -->" class="btn">Apply now</a>
-                    <a href="/jobs/account/saved-jobs/?action=save&id=<!-- insert job id here -->" class="btn reverse">Save this job</a>
+                    <a href="<!-- insert root_url parameter here -->/account/application/?action=apply&id=<!-- insert job id here -->" class="btn">Apply now</a>
+                    <a href="<!-- insert root_url parameter here -->/account/saved-jobs/?action=save&id=<!-- insert job id here -->" class="btn reverse">Save this job</a>
                 </div>
                 <!-- end call to action area -->
 
@@ -434,7 +434,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                 <div class="breadcrumbs">
                     <ul>
                         <li><a href="/">Imperial Home</a></li>
-                        <li><a href="/jobs">Jobs</a></li>
+                        <li><a href="<!-- insert root_url parameter here -->">Jobs</a></li>
                         <li>404 - Not found</li>
                     </ul>
                 </div>
@@ -446,8 +446,8 @@ This is used to fetch the full job descriptions and other detail for a particula
                 <div class="summary">
                     <p>Suggestions:</p>
                     <ul>
-                        <li><a href="/jobs">Return to homepage</a></li>
-                        <li><a href="/jobs/search">Search for another job</a></li>
+                        <li><a href="<!-- insert root_url parameter here -->">Return to homepage</a></li>
+                        <li><a href="<!-- insert root_url parameter here -->/search">Search for another job</a></li>
                     </ul>
                 </div>
             </div>
