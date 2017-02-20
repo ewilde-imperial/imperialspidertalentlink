@@ -142,7 +142,7 @@ This API handles the vacancy listings and provides a flexible mechanism for disp
 
 ## Jobs [/v1/job/]
 
-### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
+### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&faculty={faculty}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
 This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced.
 
 #### Examples
@@ -171,6 +171,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
     + contract: `2` (array, optional) - the selected filter options value(s) for contract.
     + salary_min: `20000` (number, optional) - the selected filter options value(s) for the salary range minimum.
     + salary_max: `60000` (number, optional) - the selected filter options value(s) for the salary range maximum.
+    + faculty: `2` (array, optional) - the faculty by which to filter search results.
     + department: `1` (array, optional) - the department by which to filter search results.
     + start: `0` (number, optional) - the numeric indicator of which record should be returned first. For example the first result would be `0`, tenth result would be `9`, first result in the third page would be `30` assuming 15 results per page.
         + Default: `0`
@@ -272,6 +273,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "contract":[2],
                         "salary_min":20000,
                         "salary_max":60000,
+                        "faculty":[2],
                         "department":[1],
                         "start":0,
                         "quantity":2,
@@ -325,6 +327,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "contract":[2],
                         "salary_min":20000,
                         "salary_max":60000,
+                        "faculty":[2],
                         "department":[1],
                         "start":0,
                         "quantity":2,
