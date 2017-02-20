@@ -167,7 +167,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
     + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields. Multiple terms seperated by '+' e.g. `senior+lecturer` and should be treated as using AND logic.
     + location: `2` (array, optional) - the selected filter option value(s) for location.
     + category: `0` (array, optional) - the selected filter option value(s) for category.
-    + subcategory: `5` (array, optional) - the selected filter options value(s) for subcategory.
+    + subcategory: `5` (array, optional) - the selected filter options value(s) for subcategory, the category parameter is required if any value for this parameter is passed. To display all subcategories, this field should be empty.
     + contract: `2` (array, optional) - the selected filter options value(s) for contract.
     + salary_min: `20000` (number, optional) - the selected filter options value(s) for the salary range minimum.
     + salary_max: `60000` (number, optional) - the selected filter options value(s) for the salary range maximum.
