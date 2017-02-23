@@ -28,7 +28,7 @@ For each filter group, a list of available options must be retrieved from the se
             + `location`
             + `category`
             + `subcategory`
-            + `contract`
+            + `job_type`
             + `salary`
             + `faculty`
             + `department`
@@ -142,7 +142,7 @@ This API handles the vacancy listings and provides a flexible mechanism for disp
 
 ## Jobs [/v1/job/]
 
-### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&faculty={faculty}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
+### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&faculty={faculty}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
 This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced.
 
 #### Examples
@@ -168,7 +168,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
     + location: `2` (array, optional) - the selected filter option value(s) for location.
     + category: `0` (array, optional) - the selected filter option value(s) for category.
     + subcategory: `5` (array, optional) - the selected filter options value(s) for subcategory, the category parameter is required if any value for this parameter is passed. To display all subcategories, this field should be empty.
-    + contract: `2` (array, optional) - the selected filter options value(s) for contract.
+    + job_type: `2` (array, optional) - the selected filter options value(s) for job type.
     + salary_min: `20000` (number, optional) - the selected filter options value(s) for the salary range minimum.
     + salary_max: `60000` (number, optional) - the selected filter options value(s) for the salary range maximum.
     + faculty: `2` (array, optional) - the faculty by which to filter search results.
@@ -220,7 +220,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                             <li class="close-date"><span class="label">Closing date: </span><span class="value"><!-- insert job closing date here --></span></li>
                             <li class="department"><span class="label">Department: </span><span class="value"><!-- insert category here --></span></li>
                             <li class="location"><span class="label">Location: </span><span class="value"><!-- insert location here --></span></li>
-                            <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert contract type here --></span></li>
+                            <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert job type here --></span></li>
                             <li class="salary"><span class="label">Salary: </span><span class="value"><!-- insert salary range here --></span></li>
                         </ul>
                     </div>
@@ -270,7 +270,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "location":[2],
                         "category":[0],
                         "subcategory":[5],
-                        "contract":[2],
+                        "job_type":[2],
                         "salary_min":20000,
                         "salary_max":60000,
                         "faculty":[2],
@@ -324,7 +324,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "location":[2],
                         "category":[0],
                         "subcategory":[5],
-                        "contract":[2],
+                        "job_type":[2],
                         "salary_min":20000,
                         "salary_max":60000,
                         "faculty":[2],
@@ -2043,7 +2043,7 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
                             "location":[2],
                             "category":[0],
                             "subcategory":[5],
-                            "contract":[2],
+                            "job_type":[2],
                             "salary_min":20000,
                             "salary_max":60000,
                             "department":[1]
@@ -2084,7 +2084,7 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
                 }
             }
 
-### Create new job alert / saved search [POST /v1/alerts/create/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+### Create new job alert / saved search [POST /v1/alerts/create/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
 Add a new job alert or saved search to the users account. It is assumed that the recipient email address will be the one stored by the system.
 
 #### Example
@@ -2100,7 +2100,7 @@ Add a new job alert or saved search to the users account. It is assumed that the
     + location: `[2, 5]` (number/array, optional) - the selected filter option value(s) for location.
     + category: `` (number/array, optional) - the selected filter option value(s) for category.
     + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
-    + contract: `` (number/array, optional) - the selected filter options value(s) for contract.
+    + job_type: `` (number/array, optional) - the selected filter options value(s) for job type (contract).
     + salary_min: `40000` (number, optional) - the selected filter option value for minimum salary.
     + salary_max: `100000` (number, optional) - the selected filter option value for maximum salary.
     + name: `lecturer jobs in Hammersmith or Silwood Park` (string, required) - the name of the job alert.
@@ -2243,7 +2243,7 @@ Add a new job alert or saved search to the users account. It is assumed that the
                 }
             }
 
-### Edit a job alert / saved search [POST /v1/alerts/edit/?alert_id={alert_id}&keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&contract%5B%5D={contract}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+### Edit a job alert / saved search [POST /v1/alerts/edit/?alert_id={alert_id}&keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
 Make amendments to a job alert or saved search. Optional fields can be sent in isolation to avoid updating other fields unnecessarily.
 
 #### Example
@@ -2265,7 +2265,7 @@ Make amendments to a job alert or saved search. Optional fields can be sent in i
     + location: `2` (number/array, optional) - the selected filter option value(s) for location.
     + category: `` (number/array, optional) - the selected filter option value(s) for category.
     + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
-    + contract: `` (number/array, optional) - the selected filter options value(s) for contract.
+    + job_type: `` (number/array, optional) - the selected filter options value(s) for job type.
     + salary_min: `20000` (number, optional) - the selected filter option value for minimum salary.
     + salary_max: `60000` (number, optional) - the selected filter option value for maximum salary.
     + name: `lecturer jobs in Hammersmith` (string, optional) - the name of the job alert.
