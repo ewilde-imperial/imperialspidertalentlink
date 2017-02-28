@@ -884,7 +884,139 @@ Make amendments or additions to stored account information. Optional fields may 
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <fieldset>
+                <legend>Name</legend>
+
+                <!-- prefix -->
+                <div class="field combo<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="prefix"><!-- insert prefix label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <select name="prefix" id="prefix" class="chosen" autocomplete="honorific-prefix"<!-- if manditory --> required<!-- end if manditory -->>
+                        <!-- repeat for all values -->
+                        <option value="<!-- insert prefix value here -->"<!-- if this is the current prefix value --> selected<!-- end if -->><!-- insert prefix value here --></option>
+                        <!-- end repeat  -->
+                    </select>
+                </div>
+                <!-- end prefix -->
+
+                <!-- first name -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="firstname"><!-- insert first name label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="firstname" id="firstname" type="text" autocomplete="given-name" value="<!-- insert first name value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end first name -->
+
+                <!-- last name -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="lastname"><!-- insert last name label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="lastname" id="lastname" type="text" autocomplete="family-name" value="<!-- insert last name value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end last name -->
+            </fieldset>
+
+            <fieldset>
+                <legend>Contact information</legend>
+                <!-- email -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="email"><!-- insert email label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="email" id="email" type="email" autocomplete="email" value="<!-- insert email value here -->" placeholder="email@example.org"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end email -->
+                
+                <!-- phone (preferred) -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="phone"><!-- insert phone label here --></label>
+                    <input name="phone" id="phone" type="tel" autocomplete="tel" value="<!-- insert phone value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end phone (preferred) -->
+                
+                <!-- phone (alternate) -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="phone_alt"><!-- insert mobile label here --></label>
+                    <input name="phone_alt" id="phone_alt" type="tel" value="<!-- insert mobile value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end phone (alternate) -->
+                
+                <!-- skype -->
+                <div class="field icon skype<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="skype"><!-- insert skype label here --></label>
+                    <input name="skype" id="skype" type="text" placeholder="username" value="<!-- insert skype value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end skype -->
+            </fieldset>
+
+            <fieldset>
+                <legend>Location</legend>
+                <div class="group address">
+                    <!-- address line 1 -->
+                    <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                        <label for="address1">Address <span class="sr-only">line 1</span><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                        <input name="address1" id="address1" type="text" autocomplete="address-line1" value="<!-- insert address line 1 value here-->"<!-- if manditory --> required<!-- end if manditory -->>
+                    </div>
+                    <!-- end address line 1 -->
+
+                    <!-- address line 2 -->
+                    <div class="field sr-only-label">
+                        <label for="address2">Address line 2</label>
+                        <input name="address2" id="address2" type="text" autocomplete="address-line2" value="<!-- insert address line 2 value here-->">
+                    </div>
+                    <!-- end address line 2 -->
+
+                    <!-- address line 3 -->
+                    <div class="field sr-only-label">
+                        <label for="address3">Address line 3</label>
+                        <input name="address3" id="address3" type="text" autocomplete="address-line3" value="<!-- insert address line 2 value here-->">
+                    </div>
+                    <!-- end address line 3 -->
+                </div>
+                <div class="group location">
+                    <!-- city -->
+                    <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                        <label for="city"><!-- insert city label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                        <input name="city" id="city" type="text" value="<!-- insert city value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                    </div>
+                    <!-- end city -->
+
+                    <!-- postcode -->
+                    <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                        <label for="postcode"><!-- insert postcode label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                        <input name="postcode" id="postcode" type="text" autocomplete="postal-code" value="<!-- insert postcode value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                    </div>
+                    <!-- end postcode -->
+                </div>
+
+                <!-- country -->
+                <div class="field combo<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="country"><!-- insert country label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <select name="country" id="country" class="chosen" autocomplete="country-name"<!-- if manditory --> required<!-- end if manditory -->>
+                        <optgroup label="Frequently chosen">
+                            <option value="GB">United Kingdom</option>
+                            <option value="US">United States</option>
+                        </optgroup>
+                        <optgroup label="All options">
+                            <!-- repeat all available options -->
+                            <option value="<!-- insert country value here -->"><!-- insert country option label here --></option>
+                            <!-- end repeat -->
+                        </optgroup>
+                    </select>
+                </div>
+                <!-- end country -->
+            </fieldset>
+
+            <fieldset>
+                <legend>Profiles</legend>
+                <!-- linkedin -->
+                <div class="field icon linkedin<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="linkedin"><!-- insert linkedin label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="linkedin" id="linkedin" type="url" placeholder="Profile address" value="<!-- insert linkedin value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end linkedin -->
+                <!-- xing -->
+                <div class="field icon xing<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="xing"><!-- insert xing label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="xing" id="xing" type="url" placeholder="Profile address"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end xing -->
+            </fieldset>
         ```
 
 + Response 400 (text/html)
