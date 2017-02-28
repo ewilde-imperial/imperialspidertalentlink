@@ -634,7 +634,62 @@ List the stored account details for the currently logged in user.
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <fieldset>
+                <legend class="sr-only">Security</legend>
+
+                <div class="group">
+                    <!-- current password -->
+                    <div class="field password required">
+                        <label for="current-password">Current password <span class="required">required</span></label>
+                        <input name="current-password" id="current-password" type="password" autocomplete="current-password" required>
+                    </div>
+                    <!-- end current password -->
+                </div>
+
+                <div class="group">
+                    <!-- new password -->
+                    <div class="field password">
+                        <label for="password">New password</label>
+                        <input name="password" id="password" type="password">
+                    </div>
+                    <!-- end new password -->
+                    
+                    <!-- confirm password -->
+                    <div class="field required">
+                        <label for="confirmation">Confirm password</label>
+                        <input name="confirmation" id="confirmation" type="password">
+                    </div>
+                    <!-- end confirm password -->
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend class="sr-only">Verification</legend>
+
+                <!-- security question -->
+                <div class="field required">
+                    <label for="question">Security question <span class="required">required</span></label>
+                    <input type="text" list="questions" name="question" id="question" value="<!-- insert security question value here -->" required>
+                    <datalist id="questions">
+                        <option value="Why is the sky blue?"></option>
+                        <option value="What did you want to be when you grew up?"></option>
+                        <option value="Where were you for New Year in 2000?"></option>
+                        <option value="In what city or town did your mother and father meet?"></option>
+                        <option value="Who was your childhood hero?"></option>
+                        <option value="What is the name of the person whose middle name is Lee?"></option>
+                        <option value="Where was the first destination you flew to?"></option>
+                        <option value="What was your first computer?"></option>
+                    </datalist>
+                </div>
+                <!-- end security question -->
+                
+                <!-- security answer -->
+                <div class="field password required">
+                    <label for="answer">Security answer <span class="required">required</span></label>
+                    <input name="answer" id="answer" type="password" value="this is just a dummy placeholder" required>
+                </div>
+                <!-- end security answer -->
+            </fieldset>
         ```
 
 + Response 401 (text/html)
