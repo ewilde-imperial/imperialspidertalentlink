@@ -793,7 +793,7 @@ Create a new user account with the minimum required fields.
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- success -->
         ```
 
 + Response 400 (text/html)
@@ -802,7 +802,7 @@ Create a new user account with the minimum required fields.
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: bad request -->
         ```
 
 + Response 409 (text/html)
@@ -811,7 +811,7 @@ Create a new user account with the minimum required fields.
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: conflict -->
         ```
 
 + Request JSON Message
@@ -1080,7 +1080,7 @@ Make amendments or additions to stored account information. Optional fields may 
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: bad request -->
         ```
 
 + Response 404 (text/html)
@@ -1089,7 +1089,7 @@ Make amendments or additions to stored account information. Optional fields may 
     + Body
     
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: not found -->
         ```
 
 + Request JSON Message
@@ -1197,7 +1197,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- success -->
         ```
         
 + Response 401 (text/html)
@@ -1206,7 +1206,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: unauthorised -->
         ```
         
 + Response 404 (text/html)
@@ -1215,7 +1215,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: not found -->
         ```
 
 + Response 500 (application/json)
@@ -1224,7 +1224,7 @@ If a request is made and cannot be fulfilled by talentlink due to poor connectiv
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: internal server error -->
         ```
         
 + Request JSON Message
@@ -1313,7 +1313,7 @@ Allow the user to request a password reset url delivered to their email address.
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- success -->
         ```
 
 + Response 401 (text/html)
@@ -1322,7 +1322,16 @@ Allow the user to request a password reset url delivered to their email address.
     + Body
 
         ```html
-            <!-- to be confirmed by 3 March 2017 -->
+            <!-- error: unauthorised -->
+        ```
+
++ Response 404 (application/json)
+**404 Error: not found.** If a request is made to reset password for a non-existant or deleted account.
+
+    + Body
+    
+        ```html
+            <!-- error: not found -->
         ```
 
 + Request JSON Message
