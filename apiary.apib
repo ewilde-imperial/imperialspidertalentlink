@@ -36,6 +36,18 @@ For each filter group, a list of available options must be retrieved from the se
 ### Retrieve Filters [GET]
 Retrieve a list of values to be used in the search filter select boxes. Values listed here are for demonstration purposes, so can be changed depending on implentation.
 
+#### Examples
+
+##### List available categories
+```
+/v1/fetch/filters/?filter=category
+```
+
+##### List subcategories of 'Support services'
+```
+/v1/fetch/filters/?filter=subcategory&parent=16601
+```
+
 + Request HTML Message
 
     + Headers
