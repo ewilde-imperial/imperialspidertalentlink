@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v0.8)
+# Spider Talentlink API Interface (v0.8.1)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -673,159 +673,6 @@ When the user has created a new account, they are sent an email authentication l
 ## Account [/v1/account/]
 This is the API for user-level account management.
 
-### Retrieve account details [GET /v1/account/details/?email={email}]
-List the stored account details for the currently logged in user.
-
-+ Parameters
-
-    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
-
-+ Request HTML Message
-
-    + Headers
-
-            Accept: text/html
-            
-+ Response 200 (text/html)
-
-    + Body
-    
-        ```html
-            <fieldset>
-                <legend class="sr-only">Security</legend>
-
-                <div class="group">
-                    <!-- current password -->
-                    <div class="field password required">
-                        <label for="current-password">Current password <span class="required">required</span></label>
-                        <input name="current-password" id="current-password" type="password" autocomplete="current-password" required>
-                    </div>
-                    <!-- end current password -->
-                </div>
-
-                <div class="group">
-                    <!-- new password -->
-                    <div class="field password">
-                        <label for="password">New password</label>
-                        <input name="password" id="password" type="password">
-                    </div>
-                    <!-- end new password -->
-                    
-                    <!-- confirm password -->
-                    <div class="field required">
-                        <label for="confirmation">Confirm password</label>
-                        <input name="confirmation" id="confirmation" type="password">
-                    </div>
-                    <!-- end confirm password -->
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend class="sr-only">Verification</legend>
-
-                <!-- security question -->
-                <div class="field required">
-                    <label for="question">Security question <span class="required">required</span></label>
-                    <input type="text" list="questions" name="question" id="question" value="<!-- insert security question value here -->" required>
-                    <datalist id="questions">
-                        <option value="Why is the sky blue?"></option>
-                        <option value="What did you want to be when you grew up?"></option>
-                        <option value="Where were you for New Year in 2000?"></option>
-                        <option value="In what city or town did your mother and father meet?"></option>
-                        <option value="Who was your childhood hero?"></option>
-                        <option value="What is the name of the person whose middle name is Lee?"></option>
-                        <option value="Where was the first destination you flew to?"></option>
-                        <option value="What was your first computer?"></option>
-                    </datalist>
-                </div>
-                <!-- end security question -->
-                
-                <!-- security answer -->
-                <div class="field password required">
-                    <label for="answer">Security answer <span class="required">required</span></label>
-                    <input name="answer" id="answer" type="password" value="this is just a dummy placeholder" required>
-                </div>
-                <!-- end security answer -->
-            </fieldset>
-        ```
-
-+ Response 401 (text/html)
-**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
-
-    + Body
-    
-        ```html
-            <!-- error: unauthorised -->
-        ```
-
-+ Response 404 (text/html)
-**404 Error: not found.** A request has been made to list details for a non-existant or deleted account.
-
-    + Body
-    
-        ```html
-            <!-- error: not found -->
-        ```
-
-+ Request JSON Message
-
-    + Headers
-
-            Accept: application/json
-            Cookie: authentication token
-
-+ Response 200 (application/json)
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk",
-                    }
-                },
-                "data":{
-                    "email":"e.wilde@imperial.ac.uk",
-                    "firstname":"Ed",
-                    "lastname":"Wilde",
-                    "question":"Favourite colour?",
-                    "answer":"Imperial blue"
-                }
-            }
-
-+ Response 401 (application/json)
-**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk"
-                    }
-                },
-                "data":{
-                    "response":"unauthorised"
-                }
-            }
-
-+ Response 404 (application/json)
-**404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "email":"f.wilde@imperial.ac.uk"
-                    }
-                },
-                "data":{
-                    "response":"not found"
-                }
-            }
-
-
 ### Create new account [POST /v1/account/create/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}]
 Create a new user account with the minimum required fields.
 
@@ -888,9 +735,7 @@ Create a new user account with the minimum required fields.
                         "password":"password",
                         "confirmation":"password",
                         "firstname":"Ed",
-                        "lastname":"Wilde",
-                        "question":"Favourite colour?",
-                        "answer":"Imperial blue"
+                        "lastname":"Wilde"
                     }
                 },
                 "data":{
@@ -910,9 +755,7 @@ Create a new user account with the minimum required fields.
                         "password":"password",
                         "confirmation":"password",
                         "firstname":"Ed",
-                        "lastname":"",
-                        "question":"Favourite colour?",
-                        "answer":"Imperial blue"
+                        "lastname":""
                     }
                 },
                 "data":{
@@ -937,9 +780,7 @@ Create a new user account with the minimum required fields.
                         "password":"password",
                         "confirmation":"password",
                         "firstname":"Ed",
-                        "lastname":"Wilde",
-                        "question":"Favourite colour?",
-                        "answer":"Imperial blue"
+                        "lastname":"Wilde"
                     }
                 },
                 "data":{
@@ -976,8 +817,6 @@ View or make amendments or additions to stored account information. Optional fie
     + prefix: `Mr` (string, optional) - the users prefix/title
     + firstname: `Ed` (string, optional) - the users forename.
     + lastname: `Wilde` (string, optional) - the users surname.
-    + question: `Favourite colour?` (string, optional) - a security question for the user to verify their account.
-    + answer: `Imperial blue` (string, optional) - the answer to the security question.
     + phone: `01234567890` (string, optional) - the preferred phone number for the account
     + phone_alt: `01234567890` (string, optional) - the alternative phone number for the account
     + skype: `edwilde` (string, optional) - a skype username for the user
@@ -1174,8 +1013,6 @@ View or make amendments or additions to stored account information. Optional fie
                         "prefix":"Mr",
                         "firstname":"Ed",
                         "lastname":"Wilde",
-                        "question":"Favourite colour?",
-                        "answer":"Imperial blue",
                         "phone":"01234567890",
                         "phone_alt":"01234567890",
                         "skype":"edwilde",
@@ -1206,9 +1043,7 @@ View or make amendments or additions to stored account information. Optional fie
                         "password":"password",
                         "confirmation":"password",
                         "firstname":"Ed",
-                        "lastname":"",
-                        "question":"Favourite colour?",
-                        "answer":"Imperial blue"
+                        "lastname":""
                     }
                 },
                 "data":{
@@ -1229,9 +1064,7 @@ View or make amendments or additions to stored account information. Optional fie
             {
                 "meta":{
                     "param":{
-                        "email":"f.wilde@imperial.ac.uk",
-                        "question":"Favourite colour?",
-                        "answer":"Normal blue"
+                        "email":"f.wilde@imperial.ac.uk"
                     }
                 },
                 "data":{
