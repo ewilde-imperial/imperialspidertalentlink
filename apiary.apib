@@ -673,7 +673,7 @@ When the user has created a new account, they are sent an email authentication l
 ## Account [/v1/account/]
 This is the API for user-level account management.
 
-### Create new account [POST /v1/account/create/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}]
+### Create new account [POST /v1/account/create/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}]
 Create a new user account with the minimum required fields.
 
 + Parameters
@@ -683,8 +683,6 @@ Create a new user account with the minimum required fields.
     + confirmation: `password` (string, required) - the confirmation of the password for this account.
     + firstname: `Ed` (string, required) - the user's forename.
     + lastname: `Wilde` (string, required) - the user's surname.
-    + question: `Favourite colour?` (string, required) - a security question for the user to verify their account.
-    + answer: `Imperial blue` (string, required) - the answer to the security question.
 
 + Request HTML Message
 
@@ -789,7 +787,7 @@ Create a new user account with the minimum required fields.
                 }
             }
 
-### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&prefix={prefix}&firstname={firstname}&lastname={lastname}&question={question}&answer={answer}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
+### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&prefix={prefix}&firstname={firstname}&lastname={lastname}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
 View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily.
 
 #### Examples
@@ -1529,7 +1527,7 @@ Fetch the sidebar navigation for the application process.
                         "id":"EX12345"
                     }
                 },
-                "data":{
+                "data":
                     "steps":[
                         {
                             "name":"personal-details",
