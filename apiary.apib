@@ -154,7 +154,7 @@ This API handles the vacancy listings and provides a flexible mechanism for disp
 
 ## Jobs [/v1/job/]
 
-### Retrieve job listing [GET /v1/job/listing/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&faculty={faculty}&department={department}&start={start}&quantity={quantity}&sort_by={sort_by}&sort_order={sort_order}&root_url={root_url}&alert_id={alert_id}]
+### Retrieve job listing [GET /v1/job/listing/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,faculty,department,start,quantity,sort_by,sort_order,root_url,alert_id}]
 This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced.
 
 #### Examples
@@ -359,7 +359,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                 }
             }
     
-### Retrieve job details [GET /v1/job/details/?id={id}&root_url={root_url}]
+### Retrieve job details [GET /v1/job/details/{?id,root_url}]
 This is used to fetch the full job descriptions and other detail for a particular job.
 
 + Parameters
