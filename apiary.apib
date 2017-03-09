@@ -680,7 +680,7 @@ When the user has created a new account, they are sent an email authentication l
 ## Account [/v1/account/]
 This is the API for user-level account management.
 
-### Create new account [POST /v1/account/create/?email={email}&password={password}&confirmation={confirmation}&firstname={firstname}&lastname={lastname}]
+### Create new account [POST /v1/account/create/{?email,password,confirmation,firstname,lastname}]
 Create a new user account with the minimum required fields.
 
 + Parameters
@@ -794,7 +794,7 @@ Create a new user account with the minimum required fields.
                 }
             }
 
-### Edit account [POST /v1/account/edit/?email={email}&password={password}&confirmation={confirmation}&prefix={prefix}&firstname={firstname}&lastname={lastname}&phone={phone}&phone_alt={phone_alt}&skype={skype}&address1={address1}&address2={address2}&address3={address3}&city={city}&postcode={postcode}&country={country}&linkedin={linkedin}&xing={xing}]
+### Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
 View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily.
 
 #### Examples
@@ -1078,7 +1078,7 @@ View or make amendments or additions to stored account information. Optional fie
                 }
             }
             
-### Delete account [DELETE /v1/account/remove/?email={email}]
+### Delete account [DELETE /v1/account/remove/{?email}]
 Remove the account and any linked data from talentlink. Any open applications should be deleted as part of the process.
 
 + Parameters
@@ -1198,7 +1198,7 @@ If a request is made and cannot be fulfilled by talentlink due to poor connectiv
                 }
             }
 
-### Create new password request [POST /v1/account/reset_password/?email={email}]
+### Create new password request [POST /v1/account/reset_password/{?email}]
 Allow the user to request a password reset url delivered to their email address.
 
 + Request HTML Message
