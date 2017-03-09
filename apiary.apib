@@ -1434,7 +1434,7 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                 }
             }
 
-### Create a new application process [POST /v1/application/form/?id={id}&edit={edit}]
+### Create a new application process [POST /v1/application/form/{?id,edit}]
 Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server.
 
 + Parameters
@@ -1476,7 +1476,7 @@ Start the process of creating a new application in talentlink. The rest of the a
             <!-- to be confirmed by 24 March 2017 -->
         ```
 
-### Retrieve application progress [GET /v1/application/progress/?id={id}]
+### Retrieve application progress [GET /v1/application/progress/{?id}]
 Fetch the sidebar navigation for the application process.
 
 + Parameters
@@ -1599,7 +1599,7 @@ Fetch the sidebar navigation for the application process.
                 }
             }
 
-### Delete an application [DELETE /v1/application/remove/?talentlink_id={talentlink_id}]
+### Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
 Remove an existing job application from the system.
 
 + Parameters
@@ -1995,7 +1995,7 @@ The user has clicked the save job button, add the job to the users saved jobs in
                 }
             }
 
-### Delete saved job [DELETE /v1/saved/remove/?id={id}]
+### Delete saved job [DELETE /v1/saved/remove/{?id}]
 Remove a link to a saved job vacancy on the users account.
 
 + Parameters
