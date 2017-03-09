@@ -18,12 +18,12 @@ https://github.com/ewilde-imperial/imperialspidertalentlink/commits/master
 # Group Filters
 API requests for filling static content, dependent on values from within the Talentlink system.
 
-## Populate Filters [/v1/fetch/filters/?filter={filter_name}&parent={parent_id}]
+## Populate Filters [/v1/fetch/filters/{?filter,parent}]
 For each filter group, a list of available options must be retrieved from the server.
 
 + Parameters
 
-    + filter_name: `location` (enum[String], required) - the type of filter to get options for.
+    + filter: `location` (enum[String], required) - the type of filter to get options for.
         + Members
             + `location`
             + `category`
@@ -31,7 +31,7 @@ For each filter group, a list of available options must be retrieved from the se
             + `job_type`
             + `faculty`
             + `department`
-    + parent_id: `0` (number, optional) - filter the returned subcategories and departments based on their parent element (category and faculty respectivly). If a parent is specified for something other than subcategory or department then an error will be returned. If parent id is invalid, then no results will be returned.
+    + parent: `0` (number, optional) - filter the returned subcategories and departments based on their parent element (category and faculty respectivly). If a parent is specified for something other than subcategory or department then an error will be returned. If parent id is invalid, then no results will be returned.
    
 ### Retrieve Filters [GET]
 Retrieve a list of values to be used in the search filter select boxes. Values listed here are for demonstration purposes, so can be changed depending on implentation.
