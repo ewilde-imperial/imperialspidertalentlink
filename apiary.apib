@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v0.8.1)
+# Spider Talentlink API Interface (v0.8.2)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -2185,7 +2185,7 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
                 }
             }
 
-### Create new job alert / saved search [POST /v1/alerts/create/?keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+### Create new job alert / saved search [POST /v1/alerts/create/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
 Add a new job alert or saved search to the users account. It is assumed that the recipient email address will be the one stored by the system.
 
 #### Example
@@ -2344,7 +2344,7 @@ Add a new job alert or saved search to the users account. It is assumed that the
                 }
             }
 
-### Edit a job alert / saved search [POST /v1/alerts/edit/?alert_id={alert_id}&keywords={keywords}&location%5B%5D={location}&category%5B%5D={category}&subcategory%5B%5D={subcategory}&job_type%5B%5D={job_type}&salary_min={salary_min}&salary_max={salary_max}&name={name}&frequency={frequency}]
+### Edit a job alert / saved search [POST /v1/alerts/edit/{?alert_id,keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
 Make amendments to a job alert or saved search. Optional fields can be sent in isolation to avoid updating other fields unnecessarily.
 
 #### Example
@@ -2501,7 +2501,7 @@ Make amendments to a job alert or saved search. Optional fields can be sent in i
                 }
             }
 
-### Delete job alert [DELETE /v1/alerts/remove/?alert_id={alert_id}]
+### Delete job alert [DELETE /v1/alerts/remove/{?alert_id}]
 Remove an existing job alert or saved search.
 
 + Parameters
