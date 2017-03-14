@@ -552,10 +552,10 @@ This is used to fetch the full job descriptions and other detail for a particula
         
 
 # Group Authenticated
-These API functions relate to the account creation process or require the user to be logged in with a valid session/cookie. 
+These API functions relate to the account creation process or require the user to be logged in with a valid token parameter in the request. 
 
 ## Login [/v1/account/login/]
-Retrieve the details required for the user to securely login to their account.
+Retrieve the details required for the user to securely login to their account. On successful login, the server responds with a unique token in the header. This userid/token parameter should be passed for all authenticated requests.
 
 ### Retrieve authentication [POST /v1/account/login/{?email,password}]
 Allow the user to authenticate against either SAML or talentlink, depending on the email address used.
@@ -572,10 +572,10 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
             Accept: text/html
 
 + Response 200 (text/html)
-
+    
     + Headers
-
-            Set-Cookie: RecruitmentAuthentication=<cookie-value>; Secure; HttpOnly;
+    
+            X-User-Auth: <userid>=<token>
 
     + Body
     
@@ -602,7 +602,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
 
     + Headers
 
-            Set-Cookie: RecruitmentAuthentication=<cookie-value>; Secure; HttpOnly;
+            X-User-Auth: <userid>=<token>
     
     + Body
     
