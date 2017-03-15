@@ -676,6 +676,15 @@ When the user has created a new account, they are sent an email authentication l
             <!-- error: conflict -->
         ```
 
++ Response 503 (text/html)
+**503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
+
+    + Body
+    
+        ```html
+            <!-- error: service unavailable -->
+        ```
+
 ## Account [/v1/account/]
 This is the API for user-level account management.
 
