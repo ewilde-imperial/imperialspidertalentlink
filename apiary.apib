@@ -1126,13 +1126,13 @@ Remove the account and any linked data from talentlink. Any open applications sh
             <!-- error: not found -->
         ```
 
-+ Response 500 (application/json)
-If a request is made and cannot be fulfilled by talentlink due to poor connectivity, error during processing etc.
++ Response 503 (text/html)
+**503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
     
     + Body
 
         ```html
-            <!-- error: internal server error -->
+            <!-- error: service unavailable -->
         ```
         
 + Request JSON Message
@@ -1189,8 +1189,8 @@ If a request is made and cannot be fulfilled by talentlink due to poor connectiv
                 }
             }
 
-+ Response 500 (application/json)
-If a request is made and cannot be fulfilled by talentlink due to poor connectivity, error during processing etc.
++ Response 503 (text/html)
+**503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
 
     + Body
     
@@ -1208,6 +1208,10 @@ If a request is made and cannot be fulfilled by talentlink due to poor connectiv
 
 ### Create new password request [POST /v1/account/reset_password/{?email}]
 Allow the user to request a password reset url delivered to their email address.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
 
 + Request HTML Message
 
