@@ -155,7 +155,7 @@ This API handles the vacancy listings and provides a flexible mechanism for disp
 ## Jobs [/v1/job/]
 
 ### Retrieve job listing [GET /v1/job/listing/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,faculty,department,start,quantity,sort_by,sort_order,root_url,alert_id}]
-This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced.
+This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced. To retrieve a listing of jobs, including those which are only available internally, add the authentication token parameter (X-User-Auth) to the request.
 
 #### Examples
 
@@ -360,7 +360,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
             }
     
 ### Retrieve job details [GET /v1/job/details/{?id,root_url}]
-This is used to fetch the full job descriptions and other detail for a particular job.
+This is used to fetch the full job descriptions and other detail for a particular job. If the job is for college internal users only, then the authentication token parameter (X-User-Auth) also needs to be included.
 
 + Parameters
 
@@ -558,7 +558,7 @@ These API functions relate to the account creation process or require the user t
 Retrieve the details required for the user to securely login to their account. On successful login, the server responds with a unique token in the header. This userid/token parameter should be passed for all authenticated requests.
 
 ### Retrieve authentication [POST /v1/account/login/{?email,password}]
-Allow the user to authenticate against either SAML or talentlink, depending on the email address used.
+Allow the user to authenticate against either SAML or talentlink, depending on the email address used. In the response header for this request, if authentication is successful, is a authentication token parameter (X-User-Auth) in the form '<user>=<token>'. This parameter must be appended to any authenticated requests, and acts as authentication and a primary key to determine the account to use.
 
 + Parameters
 
@@ -668,7 +668,7 @@ When the user has created a new account, they are sent an email authentication l
         ```
 
 + Response 409 (text/html)
-**409 Error: conflict.** If a call is made to this endpoint when the account with this email address is already active
+**409 Error: conflict.** If a call is made to this endpoint when the account with this email address is already active.
 
     + Body
     
@@ -803,7 +803,7 @@ Create a new user account with the minimum required fields.
             }
 
 ### Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
-View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily.
+View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily. To make changes to the account, the authentication token parameter (X-User-Auth) must be included, this also acts as the primary key to tell the system which account to make changes to.
 
 #### Examples
 
@@ -824,7 +824,7 @@ View or make amendments or additions to stored account information. Optional fie
 
 + Parameters
 
-    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+    + email: `e.wilde@imperial.ac.uk` (string, optional) - the email address of the user.
     + password: `password` (string, optional) - the password to use for this account.
     + confirmation: `password` (string, optional) - the confirmation of the password for this account.
     + prefix: `Mr` (string, optional) - the users prefix/title
@@ -997,6 +997,15 @@ View or make amendments or additions to stored account information. Optional fie
             <!-- error: bad request -->
         ```
 
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+    
+    + Body
+
+        ```html
+            <!-- error: unauthorised -->
+        ```
+
 + Response 404 (text/html)
 **404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
 
@@ -1011,7 +1020,6 @@ View or make amendments or additions to stored account information. Optional fie
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1069,6 +1077,22 @@ View or make amendments or additions to stored account information. Optional fie
                 }
             }
 
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
 + Response 404 (application/json)
 **404 Error: not found.** If a request is made to list details for a non-existant or deleted account.
 
@@ -1086,19 +1110,14 @@ View or make amendments or additions to stored account information. Optional fie
                 }
             }
             
-### Delete account [DELETE /v1/account/remove/{?email}]
-Remove the account and any linked data from talentlink. Any open applications should be deleted as part of the process.
-
-+ Parameters
-
-    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+### Delete account [DELETE /v1/account/remove/]
+Remove the account and any linked data from talentlink. Any open applications should be deleted as part of the process. The authentication token parameter (X-User-Auth) must be included, this also acts as the primary key to tell the system which account to make changes to.
 
 + Request HTML Message
     
     + Headers
-
+        
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
     
@@ -1140,7 +1159,6 @@ Remove the account and any linked data from talentlink. Any open applications sh
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1148,9 +1166,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     
             {
                 "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk"
-                    }
+                    "param":{}
                 },
                 "data":{
                     "response":"success"
@@ -1164,9 +1180,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     
             {
                 "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk"
-                    }
+                    "param":{}
                 },
                 "data":{
                     "response":"unauthorised"
@@ -1180,9 +1194,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     
             {
                 "meta":{
-                    "param":{
-                        "email":"f.wilde@imperial.ac.uk",
-                    }
+                    "param":{}
                 },
                 "data":{
                     "response":"not found"
@@ -1196,9 +1208,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
     
             {
                 "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk",
-                    }
+                    "param":{}
                 },
                 "data":{
                     "response":"internal server error",
@@ -1211,14 +1221,13 @@ Allow the user to request a password reset url delivered to their email address.
 
 + Parameters
 
-    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user, along with the authentication session/cookie this acts as the primary key for the account.
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user to send a password reset request to.
 
 + Request HTML Message
 
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
     
@@ -1251,7 +1260,6 @@ Allow the user to request a password reset url delivered to their email address.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1265,22 +1273,6 @@ Allow the user to request a password reset url delivered to their email address.
                 },
                 "data":{
                     "response":"success"
-                }
-            }
-
-+ Response 401 (application/json)
-**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "email":"e.wilde@imperial.ac.uk"
-                    }
-                },
-                "data":{
-                    "response":"unauthorised"
                 }
             }
 
@@ -1301,7 +1293,7 @@ Allow the user to request a password reset url delivered to their email address.
             }
 
 ## Application [/v1/application/]
-This is the API for managing job applications. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+This is the API for managing job applications. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
 ### Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/]
 Fetch a listing of incomplete job applications. Ordered by job status, closing date (asc)
@@ -1311,7 +1303,6 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1333,9 +1324,8 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
 + Request JSON Message
     
     + Headers
-
+        
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1378,7 +1368,6 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1402,7 +1391,6 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1460,7 +1448,6 @@ Start the process of creating a new application in talentlink. The rest of the a
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1500,7 +1487,6 @@ Fetch the sidebar navigation for the application process.
     + Headers
     
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1533,7 +1519,6 @@ Fetch the sidebar navigation for the application process.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1623,7 +1608,6 @@ Remove an existing job application from the system.
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
 
 + Response 200 (text/html)
 
@@ -1656,7 +1640,6 @@ Remove an existing job application from the system.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1715,7 +1698,6 @@ The API for managing a users saved jobs. For all requests the authentication ses
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1783,7 +1765,6 @@ The API for managing a users saved jobs. For all requests the authentication ses
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1798,7 +1779,6 @@ The API for managing a users saved jobs. For all requests the authentication ses
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1852,7 +1832,6 @@ Fetch a list of the saved jobs for a particular user.
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1867,7 +1846,6 @@ Fetch a list of the saved jobs for a particular user.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -1925,7 +1903,6 @@ The user has clicked the save job button, add the job to the users saved jobs in
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -1958,7 +1935,6 @@ The user has clicked the save job button, add the job to the users saved jobs in
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2019,7 +1995,6 @@ Remove a link to a saved job vacancy on the users account.
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -2052,7 +2027,6 @@ Remove a link to a saved job vacancy on the users account.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2112,7 +2086,6 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -2136,7 +2109,6 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2225,7 +2197,6 @@ Add a new job alert or saved search to the users account. It is assumed that the
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -2267,7 +2238,6 @@ Add a new job alert or saved search to the users account. It is assumed that the
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2389,7 +2359,6 @@ Make amendments to a job alert or saved search. Optional fields can be sent in i
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -2431,7 +2400,6 @@ Make amendments to a job alert or saved search. Optional fields can be sent in i
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2525,7 +2493,6 @@ Remove an existing job alert or saved search.
     + Headers
 
             Accept: text/html
-            Cookie: authentication token
             
 + Response 200 (text/html)
 
@@ -2558,7 +2525,6 @@ Remove an existing job alert or saved search.
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
