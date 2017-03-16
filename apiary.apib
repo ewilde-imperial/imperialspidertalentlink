@@ -1246,15 +1246,6 @@ Allow the user to request a password reset url delivered to their email address.
             <!-- error: unauthorised -->
         ```
 
-+ Response 404 (application/json)
-**404 Error: not found.** If a request is made to reset password for a non-existant or deleted account.
-
-    + Body
-    
-        ```html
-            <!-- error: not found -->
-        ```
-
 + Request JSON Message
 
     + Headers
@@ -1273,22 +1264,6 @@ Allow the user to request a password reset url delivered to their email address.
                 },
                 "data":{
                     "response":"success"
-                }
-            }
-
-+ Response 404 (application/json)
-**404 Error: not found.** If a request is made to reset password for a non-existant or deleted account.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "email":"f.wilde@imperial.ac.uk"
-                    }
-                },
-                "data":{
-                    "response":"not found"
                 }
             }
 
