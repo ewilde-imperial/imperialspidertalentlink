@@ -501,36 +501,34 @@ This is used to fetch the full job descriptions and other detail for a particula
                         "root_url":"http://wwwtest.imperial.ac.uk/jobs"
                     }
                 },
-                "data":[
-                    {
-                        "id":"EX12345",
-                        "title":"/* insert job title here */",
-                        "summary":"/* insert job summary here */",
-                        "url":"/* insert relative url here */",
-                        "reference":"/* insert job reference here, if different to job id */",
-                        "close_date":"/* insert job close date here */",
-                        "faculty":"/* insert job faculty here */",
-                        "department":"/* insert job department here */",
-                        "location":"/* insert job location here */",
-                        "type":"/* insert job type here */",
-                        "salary":"/* insert job salary range here */",
-                        "category":"/* insert job category here */",
-                        "subcategory":"/* insert job subcategory here */",
-                        "description":"/* insert full job description here */",
-                        "attachments":[{
-                            "name":"document1.doc",
-                            "type":" application/msword"
-                            "size":1048576
-                            "url":"/EX12345/example-job-title/document1.doc"
-                        },{
-                            "name":"document2.doc",
-                            "type":" application/msword"
-                            "size":2097152
-                            "url":"/EX12345/example-job-title/document2.doc"
-                        }],
-                        "status":"active" // other statuses ['expired', 'closed', 'talantlink offline']
-                    }
-                ]
+                "data":{
+                    "id":"EX12345",
+                    "title":"/* insert job title here */",
+                    "summary":"/* insert job summary here */",
+                    "url":"/* insert relative url here */",
+                    "reference":"/* insert job reference here, if different to job id */",
+                    "close_date":"/* insert job close date here */",
+                    "faculty":"/* insert job faculty here */",
+                    "department":"/* insert job department here */",
+                    "location":"/* insert job location here */",
+                    "type":"/* insert job type here */",
+                    "salary":"/* insert job salary range here */",
+                    "category":"/* insert job category here */",
+                    "subcategory":"/* insert job subcategory here */",
+                    "description":"/* insert full job description here */",
+                    "attachments":[{
+                        "name":"document1.doc",
+                        "type":" application/msword"
+                        "size":1048576
+                        "url":"/EX12345/example-job-title/document1.doc"
+                    },{
+                        "name":"document2.doc",
+                        "type":" application/msword"
+                        "size":2097152
+                        "url":"/EX12345/example-job-title/document2.doc"
+                    }],
+                    "status":"active" // other statuses ['expired', 'closed', 'talantlink offline']
+                }
             }
 
 + Response 404 (application/json)
