@@ -2140,7 +2140,7 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
     + Body
     
             {
-                "meta":{},U
+                "meta":{},
                 "data":{
                     "response":"unauthorised"
                 }
@@ -2304,32 +2304,20 @@ Add a new job alert or saved search to the users account. It is assumed that the
             }
 
 ### Edit a job alert / saved search [POST /v1/alerts/edit/{?alert_id,keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
-Make amendments to a job alert or saved search. Optional fields can be sent in isolation to avoid updating other fields unnecessarily.
-
-#### Example
-
-##### Modify the frequency of a saved search from weekly emails to none
-```
-/v1/alerts/edit/?alert_id=123456&frequency=none
-```
-
-##### Modify the salary bounds for a job alert
-```
-/v1/alerts/edit/?alert_id=123457&salary_min=10000&salary_max=1000000
-```
+Make amendments to a job alert or saved search.
 
 + Parameters
 
     + alert_id: `123456` (number, required) - the id of the alert/saved search
-    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields.
-    + location: `2` (number/array, optional) - the selected filter option value(s) for location.
-    + category: `` (number/array, optional) - the selected filter option value(s) for category.
-    + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
-    + job_type: `` (number/array, optional) - the selected filter options value(s) for job type.
-    + salary_min: `20000` (number, optional) - the selected filter option value for minimum salary.
-    + salary_max: `60000` (number, optional) - the selected filter option value for maximum salary.
-    + name: `lecturer jobs in Hammersmith` (string, optional) - the name of the job alert.
-    + frequency: `daily` (string, optional) - how often to send the email alert. Default is to not send email, creating a saved search instead.
+    + keywords: `lecturer` (string, required) - the keywords to search job title, job summary, job description, job id fields.
+    + location: `2` (number/array, required) - the selected filter option value(s) for location.
+    + category: `` (number/array, required) - the selected filter option value(s) for category.
+    + subcategory: `` (number/array, required) - the selected filter options value(s) for subcategory.
+    + job_type: `` (number/array, required) - the selected filter options value(s) for job type.
+    + salary_min: `20000` (number, required) - the selected filter option value for minimum salary.
+    + salary_max: `60000` (number, required) - the selected filter option value for maximum salary.
+    + name: `lecturer jobs in Hammersmith` (string, required) - the name of the job alert.
+    + frequency: `daily` (string, required) - how often to send the email alert. Default is to not send email, creating a saved search instead.
 
 + Request HTML Message
 
