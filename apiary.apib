@@ -1666,7 +1666,7 @@ Remove an existing job application from the system.
             }
 
 ## Saved Jobs [/v1/saved/]
-The API for managing a users saved jobs. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+The API for managing a users saved jobs. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
 ### Retrieve list of saved open jobs [GET /v1/saved/listing-open/]
 
@@ -1689,7 +1689,6 @@ The API for managing a users saved jobs. For all requests the authentication ses
     + Headers
 
             Accept: application/json
-            Cookie: authentication token
 
 + Response 200 (application/json)
 
@@ -2053,7 +2052,7 @@ Remove a link to a saved job vacancy on the users account.
             }
 
 ## Job alerts / Saved searches [/v1/alerts/]
-The API for managing a users job alerts / saved searches. For all requests the authentication session/cookie is used as a primary key to determine the user requesting results.
+The API for managing a users job alerts / saved searches. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
 ### Retrieve list of job alerts / saved searches [GET /v1/alerts/listing/]
 Fetch a list of job alerts and/or saved searches. For the listing requests, the basic job information is also returned to reduce the number of calls to the API. Results should be ordered by frequency then alert_id (desc) so new alerts appear first.
