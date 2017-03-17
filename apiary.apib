@@ -688,7 +688,7 @@ When the user has created a new account, they are sent an email authentication l
 ## Account [/v1/account/]
 This is the API for user-level account management.
 
-### Create new account [POST /v1/account/create/{?email,password,confirmation,firstname,lastname}]
+### Create new account [POST /v1/account/create/{?email,password,confirmation,firstname,lastname,root_url}]
 Create a new user account with the minimum required fields.
 
 + Parameters
@@ -698,6 +698,8 @@ Create a new user account with the minimum required fields.
     + confirmation: `password` (string, required) - the confirmation of the password for this account.
     + firstname: `Ed` (string, required) - the user's forename.
     + lastname: `Wilde` (string, required) - the user's surname.
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain in validation email.
+        + Default: `https://www.imperial.ac.uk/jobs`
 
 + Request HTML Message
 
