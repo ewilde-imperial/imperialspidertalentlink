@@ -1728,12 +1728,14 @@ Start the process of creating a new application in talentlink. The rest of the a
             <!-- to be confirmed by 24 March 2017 -->
         ```
 
-### Retrieve application progress [GET /v1/application/progress/{?id}]
+### Retrieve application progress [GET /v1/application/progress/{?id,root_url}]
 Fetch the sidebar navigation for the application process.
 
 + Parameters
 
     + id: `EX12345` (string, required) - the Spider id for the job listing
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain and path.
+        + Default: `https://www.imperial.ac.uk/jobs`
 
 + Request HTML Message
 
@@ -1746,7 +1748,9 @@ Fetch the sidebar navigation for the application process.
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <!-- repeat for each step of application process -->
+            <li><a href="<!-- insert root_url parameter here -->/application/step/<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->><!-- insert application step name here --></a></li>
+            <!-- end repeat -->
         ```
         
 + Response 401 (text/html)
@@ -1755,7 +1759,7 @@ Fetch the sidebar navigation for the application process.
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <!-- error: unauthorised -->
         ```
 
 + Response 404 (text/html)
@@ -1764,7 +1768,7 @@ Fetch the sidebar navigation for the application process.
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <!-- error: not found -->
         ```
 
 + Request JSON Message
