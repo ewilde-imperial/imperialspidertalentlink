@@ -1270,8 +1270,13 @@ Allow the user to request a password reset url delivered to their email address.
 ## Application [/v1/application/]
 This is the API for managing job applications. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
-### Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/]
+### Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/{?root_url}]
 Fetch a listing of incomplete job applications. Ordered by job status, closing date (asc)
+
++ Parameters
+
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain and path.
+        + Default: `https://www.imperial.ac.uk/jobs`
 
 + Request HTML Message
 
@@ -1284,7 +1289,28 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <div class="incomplete">
+                <h2>Incomplete</h2>
+                <form method="post">
+                    <ul class="listing incomplete-listing">
+                        <!-- repeat for all incomplete applications -->
+                        <li class="application listing-item">
+                            <a href="<!-- insert root_url here -->/account/application/step/1/">
+                                <h3><!-- insert job title here --></h3>
+                                <ul class="application-information">
+                                    <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert Imperial id here --></span></li>
+                                    <li class="date-modified"><span class="label">Last changed: </span><span class="value"><!-- insert date modified (php date format 'j F Y') here --></span></li>
+                                    <li class="closing-date"><span class="label">Closing date: </span><span class="value"><!-- insert closing date (php date format 'j F Y') here --></span></li>
+                                </ul>
+                            </a>
+                            <div class="application-actions">
+                                <button class="delete btn" name="talentlink_id" value="<!-- insert talentlink id here -->">Delete application</button>
+                            </div>
+                        </li>
+                        <!-- end repeat -->
+                    </ul>
+                </form>
+            </div>
         ```
 
 + Response 401 (text/html)
@@ -1293,7 +1319,7 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <!-- error: unauthorised -->
         ```
 
 + Request JSON Message
