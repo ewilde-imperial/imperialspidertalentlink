@@ -1749,7 +1749,11 @@ Fetch the sidebar navigation for the application process.
     
         ```html
             <!-- repeat for each step of application process -->
-            <li><a href="<!-- insert root_url parameter here -->/application/step/<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->><!-- insert application step name here --></a></li>
+            <li>
+                <a href="<!-- insert root_url parameter here -->/application/step/<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->>
+                    <!-- insert application step name here -->
+                </a>
+            </li>
             <!-- end repeat -->
         ```
         
