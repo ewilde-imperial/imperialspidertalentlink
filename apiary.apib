@@ -1462,14 +1462,16 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                 }
             }
 
-### Create a new application process [POST /v1/application/form/{?id,edit}]
-Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server.
+### Create a new application process [POST /v1/application/form/{?id,edit,root_url}]
+Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server. The application html output here is meant as an example, the actual output will be dependent on application form design from within the talentlink system.
 
 + Parameters
 
     + id: `EX12345` (string, required) - the Spider id for the job listing
     + edit: `true` (boolean, optional) - flag to show whether this is an edit to an existing application
         + Default: `false`
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain and path.
+        + Default: `https://www.imperial.ac.uk/jobs`
 
 + Request HTML Message
 
@@ -1482,16 +1484,239 @@ Start the process of creating a new application in talentlink. The rest of the a
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <div class="col lg-12 page-heading">
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="<!-- insert root_url here -->">Jobs</a></li>
+                        <li><a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert short job title here -->/"><!-- insert job title here --></a></li>
+                        <li>Application step <!-- insert application form step number here --> - <!-- insert application form step title here --></li>
+                    </ul>
+                </div>
+                <h1>Application for <!-- insert job title here --></h1>
+            </div>
+            
+            <div class="module job-application form">
+                <form method="post">
+                    <fieldset>
+                        <legend>Skills</legend>
+                        <div class="field check">
+                            <p class="block-label required">What is your area of expertise? <span class="required">required</span></p>
+                            <ul class="col-lg2 col-md1">
+                                <li>
+                                    <input type="checkbox" name="q1" value="Administration / Support">
+                                    <label for="q1-check1">Administration / Support</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Audit">
+                                    <label for="q1-check2">Audit</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Controlling / Finance">
+                                    <label for="q1-check3">Controlling / Finance</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Customer Services">
+                                    <label for="q1-check4">Customer Services</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Engineering">
+                                    <label for="q1-check5">Engineering</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Facilities / Building Management">
+                                    <label for="q1-check6">Facilities / Building Management</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Finance">
+                                    <label for="q1-check7">Finance</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Human Resources">
+                                    <label for="q1-check8">Human Resources</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Information Technology">
+                                    <label for="q1-check9">Information Technology</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Legal">
+                                    <label for="q1-check10">Legal</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Management">
+                                    <label for="q1-check11">Management</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Marketing / Sales / Business Development">
+                                    <label for="q1-check12">Marketing / Sales / Business Development</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Merger & Acquisition">
+                                    <label for="q1-check13">Merger &amp; Acquisition</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Product Management">
+                                    <label for="q1-check14">Product Management</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Production">
+                                    <label for="q1-check15">Production</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Project Management">
+                                    <label for="q1-check16">Project Management</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Quality Management">
+                                    <label for="q1-check17">Quality Management</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q1" value="Trade">
+                                    <label for="q1-check18">Trade</label>
+                                </li>
+                            </ul>
+                                <label class="extra" for="q1-other">Other</label>
+                            <input type="text" name="q1-other" id="q1-other" placeholder="please specify">
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <legend>Languages</legend>
+                        <div class="field combo">
+                            <label for="q2-combo">Language</label>
+                            <select name="q2-combo" class="chosen">
+                                <optgroup label="Frequently chosen">
+                                    <option value="UK">English (UK)</option>
+                                </optgroup>
+                                <optgroup label="All options">
+                                    <option value="BG">Bulgarian</option>
+                                    <option value="CN">Chinese</option>
+                                    <option value="HR">Croatian</option>
+                                    <option value="CS">Czech</option>
+                                    <option value="DN">Danish</option>
+                                    <option value="NL">Dutch</option>
+                                    <option value="UK">English (UK)</option>
+                                    <option value="EN">English (US)</option>
+                                    <option value="FN">Finnish</option>
+                                    <option value="FR">French</option>
+                                    <option value="DE">German</option>
+                                    <option value="CH">German (SWZ)</option>
+                                    <option value="EL">Greek</option>
+                                    <option value="HU">Hungarian</option>
+                                    <option value="IT">Italian</option>
+                                    <option value="JA">Japanese</option>
+                                    <option value="KO">Korean</option>
+                                    <option value="NW">Norwegian</option>
+                                    <option value="PL">Polish</option>
+                                    <option value="PT">Portuguese</option>
+                                    <option value="BR">Portuguese (BR)</option>
+                                    <option value="RO">Romanian</option>
+                                    <option value="RU">Russian</option>
+                                    <option value="SR">Serbian</option>
+                                    <option value="SK">Slovak</option>
+                                    <option value="SL">Slovenian</option>
+                                    <option value="SP">Spanish</option>
+                                    <option value="SW">Swedish</option>
+                                    <option value="TR">Turkish</option>
+                                    <option value="CY">Welsh</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="q2-text">Level</label>
+                            <input type="text" name="q2-text">
+                        </div>
+                        <div class="inline-buttons">
+                            <button class="btn small reverse no-icon">Remove language</button>
+                            <button class="btn small">Add another language</button>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <legend>Employment history</legend>
+                        <div class="field required">
+                            <label for="q3-text1">Company <span class="required">required</span></label>
+                            <input type="text" name="q3-text1" required>
+                        </div>
+                        <div class="field required">
+                            <label for="q3-text2">Position <span class="required">required</span></label>
+                            <input type="text" name="q3-text2" required>
+                        </div>
+                            <div class="group two column">
+                            <div class="field date icon required">
+                                <label for="q3-date1">Date from <span class="required">required</span></label>
+                                <input type="date" name="q3-date1" required>
+                            </div>
+                            <div class="field date icon">
+                                <label for="q3-date2">Date to</label>
+                                <input type="date" name="q3-date2">
+                            </div>
+                        </div>
+                            <div class="field textarea">
+                            <label for="q3-textarea">Job description</label>
+                            <textarea name="q3-textarea" cols="30" rows="10" maxlength="3000"></textarea>
+                        </div>
+                        <div class="inline-buttons">
+                            <button class="btn small reverse no-icon">Remove position</button>
+                            <button class="btn small">Add another position</button>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <legend>Work permit</legend>
+                        <div class="field radio row required">
+                            <p class="block-label">Do you have the eligibility to work in the EU? <span class="required">required</span></p>
+                                <input type="radio" name="q4-radio" id="q4-radio1" value="Yes" required>
+                            <label for="q4-radio1">Yes</label>
+                            <input type="radio" name="q4-radio" id="q4-radio2" value="No" required>
+                            <label for="q4-radio2">No</label>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <legend>Source</legend>
+                        <div class="field check required">
+                            <p class="block-label">How did you hear about this position? <span class="required">required</span></p>
+                                <ul class="col-lg2 col-sm1">
+                                <li>
+                                    <input type="checkbox" name="q5-check" id="q5-check1" value="Via friend">
+                                    <label for="q5-check1">Via friend</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q5-check" id="q5-check2" value="Clients website">
+                                    <label for="q5-check2">Clients website</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q5-check" id="q5-check3" value="Via event">
+                                    <label for="q5-check3">Via event</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q5-check" id="q5-check4" value="Via advert in paper">
+                                    <label for="q5-check4">Via advert in paper</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="q5-check" id="q5-check5" value="Via campaign">
+                                    <label for="q5-check5">Via campaign</label>
+                                </li>
+                            </ul>
+                                <label class="extra" for="q5-other">Other</label>
+                            <input type="text" name="q5-other" id="q5-other" placeholder="please specify">
+                        </div>
+                    </fieldset>
+
+                    <!-- begin action bar -->
+                    <div class="actions row">
+                        <button type="submit" class="btn">Save and continue</button>
+                    </div>
+                    <!-- end action bar -->
+                </form>
+            </div>
         ```
-        
+
 + Response 401 (text/html)
 **401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
 
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <!-- error: unauthorised -->
         ```
 
 + Response 404 (text/html)
