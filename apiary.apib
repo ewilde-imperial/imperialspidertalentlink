@@ -176,7 +176,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
 
 + Parameters
 
-    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields. Multiple terms seperated by '+' e.g. `senior+lecturer` and should be treated as using AND logic.
+    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, Imperial job id fields. Multiple terms seperated by '+' e.g. `senior+lecturer` and should be treated as using AND logic.
     + location: `2` (array, optional) - the selected filter option value(s) for location.
     + category: `0` (array, optional) - the selected filter option value(s) for category.
     + subcategory: `5` (array, optional) - the selected filter options value(s) for subcategory, the category parameter is required if any value for this parameter is passed. To display all subcategories, this field should be empty.
@@ -217,7 +217,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
         ```html
             <ul class="search-results" data-count="<!-- insert results count here -->">
                 <!-- begin repeating result item -->
-                <li class="imperial_single_result job" data-id="<!-- insert job id here, used in script -->">
+                <li class="imperial_single_result job" data-id="<!-- insert Imperial job id here -->">
                     <div class="row">
                         <h3 class="job-title"><!-- insert job title here --></h3>
                         <div class="job-description">
@@ -2084,7 +2084,7 @@ The API for managing a users saved jobs. For all requests the authentication tok
                                 <li class="closing-date"><span class="label">Closing date: </span><span class="value"><!-- insert closing date (php date format 'j F Y') here --></span></li>
                             </ul>
                             <div class="controls">
-                                <button class="btn reverse small remove" name="id" value="<!-- insert saved job id here -->">remove</button>
+                                <button class="btn reverse small remove" name="id" value="<!-- insert Imperial job id here -->">remove</button>
                             </div>
                         </li>
                         <!-- end repeat -->
@@ -2181,7 +2181,7 @@ Fetch a list of the saved jobs for a particular user.
                                 <li class="closing-date"><span class="label">Closing date: </span><span class="value"><!-- insert closing date (php date format 'j F Y') here --></span></li>
                             </ul>
                             <div class="controls">
-                                <button class="btn reverse small remove" name="id" value="<!-- insert saved job id here -->">remove</button>
+                                <button class="btn reverse small remove" name="id" value="<!-- insert Imperial job id here -->">remove</button>
                             </div>
                         </li>
                         <!-- end repeat -->
@@ -2536,7 +2536,7 @@ Add a new job alert or saved search to the users account. It is assumed that the
 
 + Parameters
 
-    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, job id fields.
+    + keywords: `lecturer` (string, optional) - the keywords to search job title, job summary, job description, Imperial job id fields.
     + location: `[2, 5]` (number/array, optional) - the selected filter option value(s) for location.
     + category: `` (number/array, optional) - the selected filter option value(s) for category.
     + subcategory: `` (number/array, optional) - the selected filter options value(s) for subcategory.
@@ -2687,7 +2687,7 @@ Make amendments to a job alert or saved search.
 + Parameters
 
     + alert_id: `123456` (number, required) - the id of the alert/saved search
-    + keywords: `lecturer` (string, required) - the keywords to search job title, job summary, job description, job id fields.
+    + keywords: `lecturer` (string, required) - the keywords to search job title, job summary, job description, Imperial job id fields.
     + location: `2` (number/array, required) - the selected filter option value(s) for location.
     + category: `` (number/array, required) - the selected filter option value(s) for category.
     + subcategory: `` (number/array, required) - the selected filter options value(s) for subcategory.
