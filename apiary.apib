@@ -1465,14 +1465,12 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                 }
             }
 
-### Create a new application process [POST /v1/application/form/{?id,edit,root_url}]
+### Create a new application process [POST /v1/application/form/{?id,root_url}]
 Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server. The application html output here is meant as an example, the actual output will be dependent on application form design from within the talentlink system.
 
 + Parameters
 
     + id: `EX12345` (string, required) - the Imperial id for the job listing
-    + edit: `true` (boolean, optional) - flag to show whether this is an edit to an existing application
-        + Default: `false`
     + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain and path.
         + Default: `https://www.imperial.ac.uk/jobs`
 
