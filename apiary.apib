@@ -2165,7 +2165,25 @@ Fetch a list of the saved jobs for a particular user.
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <div class="expired">
+                <h2>Expired</h2>
+                <form method="post">
+                    <ul class="listing expired-listing">
+                        <!-- repeat for all closed saved jobs -->
+                        <li class="saved listing-item disabled">
+                            <h3><!-- insert job title here --></h3>
+                            <ul class="saved-information">
+                                <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert Imperial job id here --></span></li>
+                                <li class="closing-date"><span class="label">Closing date: </span><span class="value"><!-- insert closing date (php date format 'j F Y') here --></span></li>
+                            </ul>
+                            <div class="controls">
+                                <button class="btn reverse small remove" name="id" value="<!-- insert saved job id here -->">remove</button>
+                            </div>
+                        </li>
+                        <!-- end repeat -->
+                    </ul>
+                </form>
+            </div>
         ```
 
 + Request JSON Message
