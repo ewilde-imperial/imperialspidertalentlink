@@ -1952,7 +1952,12 @@ Remove an existing job application from the system.
 ## Saved Jobs [/v1/saved/]
 The API for managing a users saved jobs. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
-### Retrieve list of saved open jobs [GET /v1/saved/listing-open/]
+### Retrieve list of saved open jobs [GET /v1/saved/listing-open/{?root_url}]
+
++ Parameters
+
+    + root_url: `http://wwwtest.imperial.ac.uk/jobs` (string, optional) - the root url to use for links, to avoid hard-coding domain and path.
+        + Default: `https://www.imperial.ac.uk/jobs`
 
 + Request HTML Message
 
@@ -1965,7 +1970,36 @@ The API for managing a users saved jobs. For all requests the authentication tok
     + Body
     
         ```html
-            <!-- to be confirmed by 24 March 2017 -->
+            <div class="open">
+                <h2>Open</h2>
+                <form method="post">
+                    <ul class="listing open-listing">
+                        <!-- repeat for each saved job -->
+                        <li class="saved-job listing-item">
+                            <a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->/">
+                                <h3><!-- insert job title here --></h3>
+                                <ul class="saved-job-information">
+                                    <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert imperial id here --></span></li>
+                                    <li class="closing-date"><span class="label">Closing date: </span><span class="value"><!-- insert closing date (php date format 'j F Y') here --></span></li>
+                                </ul>
+                            </a>
+                            <div class="controls">
+                                <button class="btn reverse small remove" name="id" value="<!-- insert saved job id here -->">remove</a>
+                            </div>
+                        </li>
+                        <!-- end repeat -->
+                    </ul>
+                </form>
+            </div>
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- error: unauthorised -->
         ```
 
 + Request JSON Message
@@ -2035,6 +2069,15 @@ The API for managing a users saved jobs. For all requests the authentication tok
     
         ```html
             <!-- to be confirmed by 24 March 2017 -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- error: unauthorised -->
         ```
 
 + Request JSON Message
