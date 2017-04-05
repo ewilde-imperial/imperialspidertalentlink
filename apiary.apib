@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.0.1)
+# Spider Talentlink API Interface (v1.0.2)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1228,7 +1228,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
             }
 
 ### Create new password request [POST /v1/account/reset_password/{?email}]
-Allow the user to request a password reset url delivered to their email address.
+Allow the user to request a password reset url delivered to their email address. If this endpoint is called for an account which has not been activated, the activation token will be sent again to the email address.
 
 + Parameters
 
@@ -1249,7 +1249,7 @@ Allow the user to request a password reset url delivered to their email address.
         ```
 
 + Response 401 (text/html)
-**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token for an activated account.
     
     + Body
 
@@ -1275,6 +1275,22 @@ Allow the user to request a password reset url delivered to their email address.
                 },
                 "data":{
                     "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token for an activated account.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
                 }
             }
 
