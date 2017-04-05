@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.0)
+# Spider Talentlink API Interface (v1.0.1)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -804,7 +804,7 @@ Create a new user account with the minimum required fields.
                 }
             }
 
-### Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
+### Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,middlename,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
 View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily. To make changes to the account, the authentication token parameter (X-User-Auth) must be included, this also acts as the primary key to tell the system which account to make changes to.
 
 #### Examples
@@ -831,6 +831,7 @@ View or make amendments or additions to stored account information. Optional fie
     + confirmation: `password` (string, optional) - the confirmation of the password for this account.
     + prefix: `Mr` (string, optional) - the users prefix/title
     + firstname: `Ed` (string, optional) - the users forename.
+    + middlename: `Danger` (string, optional) - the users middlename
     + lastname: `Wilde` (string, optional) - the users surname.
     + phone: `01234567890` (string, optional) - the preferred phone number for the account
     + phone_alt: `01234567890` (string, optional) - the alternative phone number for the account
@@ -875,6 +876,13 @@ View or make amendments or additions to stored account information. Optional fie
                     <input name="firstname" id="firstname" type="text" autocomplete="given-name" value="<!-- insert first name value here -->"<!-- if manditory --> required<!-- end if manditory -->>
                 </div>
                 <!-- end first name -->
+                
+                <!-- middle name -->
+                <div class="field<!-- if manditory --> required<!-- end if manditory -->">
+                    <label for="middlename"><!-- insert middle name label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <input name="middlename" id="middlename" type="text" autocomplete="additional-name" value="<!-- insert middle name value here -->"<!-- if manditory --> required<!-- end if manditory -->>
+                </div>
+                <!-- end middle name -->
 
                 <!-- last name -->
                 <div class="field<!-- if manditory --> required<!-- end if manditory -->">
@@ -1035,6 +1043,7 @@ View or make amendments or additions to stored account information. Optional fie
                         "confirmation":"password",
                         "prefix":"Mr",
                         "firstname":"Ed",
+                        "middlename":"Danger",
                         "lastname":"Wilde",
                         "phone":"01234567890",
                         "phone_alt":"01234567890",
