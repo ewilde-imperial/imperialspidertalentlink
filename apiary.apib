@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v0.9)
+# Spider Talentlink API Interface (v1.0)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -2452,7 +2452,7 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
             <ul class="listing">
                 <!-- repeat for all saved searches / job alerts -->
                 <li class="saved-search listing-item">
-                    <a href="<!-- insert root_url parameter here -->/account/alerts/edit/?alert_id=<!-- insert alert_id here -->alert_name=<!-- insert alert_name here -->&frequency=<!-- insert frequency here -->&<!-- insert serialised filters here -->">
+                    <a href="<!-- insert root_url parameter here -->/account/alerts/edit/?alert_id=<!-- insert alert_id here -->alert_name=<!-- insert alert_name here -->&frequency=<!-- insert frequency here -->&<!-- insert serialised search filters here -->">
                         <h3><!-- insert job alert name here --></h3>
                         <ul class="saved-search-information">
                             <li class="last-modified"><span class="label">Last updated: </span><span class="value"><!-- insert date last updated here --></span></li>
