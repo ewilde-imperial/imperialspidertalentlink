@@ -809,19 +809,19 @@ View or make amendments or additions to stored account information. Optional fie
 
 #### Examples
 
-##### Display the stored account values as an HTML form
+##### Display the stored account values as an HTML form or JSON response
 ```
-/v1/account/edit/?email=e.wilde@imperial.ac.uk
+/v1/account/edit/
 ```
 
 ##### Change the preferred phone number for the account
 ```
-/v1/account/edit/?email=e.wilde@imperial.ac.uk&phone=0987654321
+/v1/account/edit/?phone=0987654321
 ```
 
 ##### Remove the linkedin address and change the last name on the account
 ```
-/v1/account/edit/?email=e.wilde@imperial.ac.uk&linkedin=&lastname=Smith
+/v1/account/edit/?linkedin=&lastname=Smith
 ```
 
 + Parameters
@@ -1032,6 +1032,35 @@ View or make amendments or additions to stored account information. Optional fie
             Accept: application/json
 
 + Response 200 (application/json)
+**List data** When no parameters are included in the request
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "email":"e.wilde@imperial.ac.uk",
+                    "password":true,
+                    "prefix":"Mr",
+                    "firstname":"Ed",
+                    "middlename":"Danger",
+                    "lastname":"Wilde",
+                    "phone":"01234567890",
+                    "phone_alt":"01234567890",
+                    "skype":"edwilde",
+                    "address1":"Imperial College London",
+                    "address2":"South Kensington",
+                    "address3":"Exhibition Road",
+                    "city":"London",
+                    "postcode":"SW7 2AZ",
+                    "country":"United Kingdom",
+                    "linkedin":"https://uk.linkedin.com/in/edwilde",
+                    "xing":"https://www.xing.com/profile/edwilde"
+                }
+            }
+
++ Response 201 (application/json)
+**Change data** When one or more parameter is included in the request
 
     + Body
     
