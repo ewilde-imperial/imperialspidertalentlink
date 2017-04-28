@@ -575,7 +575,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
     
     + Headers
     
-            X-User-Auth: \<userid\>=\<token\>
+            X-User-Auth: {key}={token}
 
     + Body
     
@@ -602,7 +602,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
 
     + Headers
 
-            X-User-Auth: <userid>=<token>
+            X-User-Auth: {key}={token}
     
     + Body
     
@@ -615,7 +615,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
                 },
                 "data":{
                     "response":"success"
-                    "method":"SAML"
+                    "method":"Drupal"
                 }
             }
 
@@ -633,7 +633,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
                 },
                 "data":{
                     "response":"unauthorised",
-                    "method":"SAML"
+                    "method":"Drupal"
                 }
             }
 
@@ -801,6 +801,133 @@ Create a new user account with the minimum required fields.
                 "data":{
                     "response":"conflict",
                     "message":"account already exists"
+                }
+            }
+
+### Import new account [POST /v1/account/import/{?email,prefix,firstname,middlename,lastname,uid,validation}]
+Import a new account after verifying identity using a single sign on service. This call will create a new account (unless one is already created), bypassing activation and return a valid session allowing the user to access their account.
+
++ Parameters
+
+    + email: `e.wilde@imperial.ac.uk` (string, required) - the email address of the user.
+    + prefix: `Mr` (string, optional) - the users prefix/title.
+    + firstname: `Ed` (string, required) - the user's forename.
+    + middlename: `Danger` (string, optional) - the users middlename.
+    + lastname: `Wilde` (string, required) - the user's surname.
+    + uid: `1234567` (integer, required) - the unique identifier for the user.
+    + validation: `570a90bfbf8c7eab5dc5d4e26832d5b1` (string, required) - a validation string using a shared secret on the sender and api.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Headers
+
+            X-User-Auth: {key}={token}
+
+    + Body
+    
+        ```html
+            <!-- success -->
+        ```
+
++ Response 400 (text/html)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+        ```html
+            <!-- error: bad request -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint with an invalid validation field.
+
+    + Body
+    
+        ```html
+            <!-- error: unauthorised -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+    
+    + Headers
+    
+            X-User-Auth: {key}={token}
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "prefix":"Mr",
+                        "firstname":"Ed",
+                        "middlename":"Danger",
+                        "lastname":"Wilde",
+                        "uid":1234567,
+                        "validation":"570a90bfbf8c7eab5dc5d4e26832d5b1"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** A particular field or fields were rejected by the server-side validation rules.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wildeimperial.ac.uk",
+                        "firstname":"Ed",
+                        "lastname":"",
+                        "validation":"570a90bfbf8c7eab5dc5d4e26832d5b1"
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "message":"fields failed validation",
+                    "blame":[
+                        "email",
+                        "lastname",
+                        "uid"
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without the required authorisation.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "prefix":"Mr",
+                        "firstname":"Ed",
+                        "middlename":"Danger",
+                        "lastname":"Wilde",
+                        "uid":1234567,
+                        "validation":"111"
+                    }
+                },
+                "data":{
+                    "response":"unauthorised"
                 }
             }
 
