@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.0.3)
+# Spider Talentlink API Interface (v1.0.4)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1765,6 +1765,33 @@ Start the process of creating a new application in talentlink. The rest of the a
                     <!-- end action bar -->
                 </form>
             </div>
+        ```
+        
++ Response 201 (text/html)
+**201 Created** The application has been sucessfully saved and will appear in the incomplete application listing.
+
+    + Body
+    
+        ```html
+            <!-- done: saved -->
+        ```
+
++ Response 202 (text/html)
+**202 Accepted** The application has been sucessfully submitted and will appear in the submitted application listing.
+
+    + Body
+    
+        ```html
+            <!-- done: completed -->
+        ```
+
++ Response 205 (text/html)
+**205 Reset Content** The application has been cancelled.
+
+    + Body
+    
+        ```html
+            <!-- done: cancelled -->
         ```
 
 + Response 401 (text/html)
