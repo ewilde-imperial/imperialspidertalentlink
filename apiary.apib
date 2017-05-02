@@ -1731,6 +1731,10 @@ Start the process of creating a new application in talentlink. The rest of the a
             
 + Response 200 (text/html)
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
         ```html
@@ -1963,6 +1967,10 @@ Start the process of creating a new application in talentlink. The rest of the a
 + Response 201 (text/html)
 **201 Created** The application has been sucessfully saved and will appear in the incomplete application listing.
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
         ```html
@@ -1972,6 +1980,10 @@ Start the process of creating a new application in talentlink. The rest of the a
 + Response 202 (text/html)
 **202 Accepted** The application has been sucessfully submitted and will appear in the submitted application listing.
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
         ```html
@@ -1981,6 +1993,10 @@ Start the process of creating a new application in talentlink. The rest of the a
 + Response 205 (text/html)
 **205 Reset Content** The application has been cancelled.
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
         ```html
@@ -2006,7 +2022,7 @@ Start the process of creating a new application in talentlink. The rest of the a
         ```
 
 ### Retrieve application progress [GET /v1/application/progress/{?id,root_url}]
-Fetch the sidebar navigation for the application process.
+Fetch the sidebar navigation for the application process. This requires an application id (ICL_APPLICATION_ID) retrieved from the header of the /v1/application/form/ request, to identify which application form instance we require the navigation for. Note the difference between applicaton id requests (which use dash) and response (which use underscore)
 
 + Parameters
 
@@ -2017,11 +2033,16 @@ Fetch the sidebar navigation for the application process.
 + Request HTML Message
 
     + Headers
-    
+
             Accept: text/html
+            ICL-APPLICATION-ID: (24-bit String)
             
 + Response 200 (text/html)
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
         ```html
@@ -2057,9 +2078,14 @@ Fetch the sidebar navigation for the application process.
     + Headers
 
             Accept: application/json
+            ICL-APPLICATION-ID: (24-bit String)
 
 + Response 200 (application/json)
 
+    + Headers
+
+            ICL_APPLICATION_ID: (24-bit String)
+    
     + Body
     
             {
