@@ -2046,13 +2046,19 @@ Fetch the sidebar navigation for the application process. This requires an appli
     + Body
     
         ```html
-            <!-- repeat for each step of application process -->
-            <li>
-                <a href="<!-- insert root_url parameter here -->/application/step/<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->>
-                    <!-- insert application step name here -->
-                </a>
-            </li>
-            <!-- end repeat -->
+            <div class="module">
+                <form method="post">
+                    <ol class="primary" id="secondary-nav">
+                        <!-- repeat for each step of application process -->
+                        <li>
+                            <button formaction="<!-- insert root_url parameter here -->/application/<!-- insert Imperial job id here -->/<!-- insert short job title here -->/step-<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->>
+                                <!-- insert application step name here -->
+                            </button>
+                        </li>
+                        <!-- end repeat -->
+                    </ol>
+                </form>
+            </div>
         ```
         
 + Response 401 (text/html)
@@ -2100,27 +2106,27 @@ Fetch the sidebar navigation for the application process. This requires an appli
                         {
                             "name":"personal-details",
                             "title":"Personal details",
-                            "url":"application/step-1-of-5/",
+                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-1/",
                             "active":false
                         },{
                             "name":"application-form",
                             "title":"Application form",
-                            "url":"application/step-2-of-5/",
+                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-2/",
                             "active":true
                         },{
                             "name":"cover-letter",
                             "title":"Cover letter",
-                            "url":"application/step-3-of-5/",
+                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-3/",
                             "active":false
                         },{
                             "name":"diversity-questionnaire",
                             "title":"Diversity questionnaire",
-                            "url":"application/step-4-of-5/",
+                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-4/",
                             "active":false
                         },{
                             "name":"review-and-submit",
                             "title":"Review and submit",
-                            "url":"application/step-5-of-5/",
+                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-5/",
                             "active":false
                         }
                     ]
