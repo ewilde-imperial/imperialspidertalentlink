@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.1)
+# Spider Talentlink API Interface (v1.1.1)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -990,6 +990,7 @@ View or make amendments or additions to stored account information. Optional fie
                 <div class="field combo<!-- if manditory --> required<!-- end if manditory -->">
                     <label for="prefix"><!-- insert prefix label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
                     <select name="prefix" id="prefix" class="chosen" autocomplete="honorific-prefix"<!-- if manditory --> required<!-- end if manditory -->>
+                        <option value="" disabled>Please select</option>
                         <!-- repeat for all values -->
                         <option value="<!-- insert prefix value here -->"<!-- if this is the current prefix value --> selected<!-- end if -->><!-- insert prefix value here --></option>
                         <!-- end repeat  -->
@@ -1094,6 +1095,7 @@ View or make amendments or additions to stored account information. Optional fie
                 <div class="field combo<!-- if manditory --> required<!-- end if manditory -->">
                     <label for="country"><!-- insert country label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
                     <select name="country" id="country" class="chosen" autocomplete="country-name"<!-- if manditory --> required<!-- end if manditory -->>
+                        <option value="" disabled>Please select</option>
                         <optgroup label="Frequently chosen">
                             <option value="GB">United Kingdom</option>
                             <option value="US">United States</option>
