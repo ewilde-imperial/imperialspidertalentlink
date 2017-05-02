@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.1.1)
+# Spider Talentlink API Interface (v1.1.2)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -853,6 +853,24 @@ Import a new account after verifying identity using a single sign on service. Th
             <!-- error: unauthorised -->
         ```
 
++ Response 403 (text/html)
+**403 Error: forbidden.** If a call is made to this endpoint for an account which is suspended.
+
+    + Body
+    
+        ```html
+            <!-- error: forbidden -->
+        ```
+        
++ Response 503 (text/html)
+**503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
+    
+    + Body
+
+        ```html
+            <!-- error: service unavailable -->
+        ```
+
 + Request JSON Message
 
     + Headers
@@ -928,6 +946,52 @@ Import a new account after verifying identity using a single sign on service. Th
                 },
                 "data":{
                     "response":"unauthorised"
+                }
+            }
+
++ Response 403 (application/json)
+**403 Error: forbidden.** If a call is made to this endpoint for an account which is suspended.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "prefix":"Mr",
+                        "firstname":"Ed",
+                        "middlename":"Danger",
+                        "lastname":"Wilde",
+                        "uid":1234567,
+                        "validation":"570a90bfbf8c7eab5dc5d4e26832d5b1"
+                    }
+                },
+                "data":{
+                    "response":"forbidden",
+                    "message":"this account is suspended"
+                }
+            }
+
++ Response 503 (text/html)
+**503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "email":"e.wilde@imperial.ac.uk",
+                        "prefix":"Mr",
+                        "firstname":"Ed",
+                        "middlename":"Danger",
+                        "lastname":"Wilde",
+                        "uid":1234567,
+                        "validation":"570a90bfbf8c7eab5dc5d4e26832d5b1"
+                    }
+                },
+                "data":{
+                    "response":"service unavailable",
+                    "message":"there are communication problems between the application and talentlink"
                 }
             }
 
