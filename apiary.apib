@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.1.2)
+# Spider Talentlink API Interface (v1.1.3)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1088,7 +1088,12 @@ View or make amendments or additions to stored account information. Optional fie
                 <!-- email -->
                 <div class="field<!-- if manditory --> required<!-- end if manditory -->">
                     <label for="email"><!-- insert email label here --><!-- if manditory --> <span class="required">required</span><!-- end if manditory --></label>
+                    <!-- if user has Imperial login -->
+                    <input name="email-placeholder" id="email-placeholder" type="email" value="<!-- insert email value here -->">
+                    <input name="email" id="email" type="hidden" value="<!-- insert email value here -->">
+                    <!-- else -->
                     <input name="email" id="email" type="email" autocomplete="email" value="<!-- insert email value here -->" placeholder="email@example.org"<!-- if manditory --> required<!-- end if manditory -->>
+                    <!-- end if user -->
                 </div>
                 <!-- end email -->
                 
