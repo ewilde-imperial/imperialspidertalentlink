@@ -219,7 +219,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
         ```html
             <ul class="search-results" data-count="<!-- insert results count here -->">
                 <!-- begin repeating result item -->
-                <li class="imperial_single_result job" data-id="<!-- insert Imperial job id here -->">
+                <li class="imperial_single_result job<!-- if internal listing --> internal<!-- end if -->" data-id="<!-- insert Imperial job id here -->">
                     <div class="row">
                         <h3 class="job-title"><!-- insert job title here --></h3>
                         <div class="job-description">
@@ -313,7 +313,8 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "type":"/* insert job type here */",
                         "salary":"/* insert job salary range here */",
                         "category":"/* insert job category here */",
-                        "subcategory":"/* insert job subcategory here */"
+                        "subcategory":"/* insert job subcategory here */",
+                        "internal":"/* insert internal listing boolean here */"
                     },{
                         "id":"/* insert Spider job id here */",
                         "title":"/* insert job title here */",
@@ -326,7 +327,8 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "type":"/* insert job type here */",
                         "salary":"/* insert job salary range here */",
                         "category":"/* insert job category here */",
-                        "subcategory":"/* insert job subcategory here */"
+                        "subcategory":"/* insert job subcategory here */",
+                        "internal":"/* insert internal listing boolean here */"
                     }
                 ]
             }
@@ -392,7 +394,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                 <h1><!-- insert job title here --></h1>
             </div>
 
-            <div class="module job-description" itemscope itemtype="http://schema.org/JobPosting">
+            <div class="module job-description<!-- if internal listing --> internal<!-- end if -->" itemscope itemtype="http://schema.org/JobPosting">
                 <meta itemprop="title" content="<!-- insert job title here -->">
 
                 <!-- begin call to action area -->
@@ -529,7 +531,8 @@ This is used to fetch the full job descriptions and other detail for a particula
                         "size":2097152
                         "url":"/EX12345/example-job-title/document2.doc"
                     }],
-                    "status":"active" // other statuses ['expired', 'closed', 'talantlink offline']
+                    "status":"active", // other statuses ['expired', 'closed', 'talantlink offline']
+                    "internal":"/* insert internal listing boolean here */"
                 }
             }
 
