@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.1.3)
+# Spider Talentlink API Interface (v1.1.4)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -242,7 +242,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         </div>
                         <div class="job-actions">
                             <a href="<!-- insert root_url parameter here -->/account/saved-jobs/?action=save&id=<!-- insert Imperial job id here -->" class="btn reverse">Save this job</a>
-                            <a href="<!-- insert root_url parameter here -->/account/application/?action=apply&id=<!-- insert Imperial job id here -->" class="btn">Apply now</a>
+                            <a href="<!-- insert root_url parameter here -->/application/<!-- insert Imperial job id here -->/<!-- insert shortened, url friendly job title here -->/" class="btn">Apply now</a>
                         </div>
                     </div>
                 </li>
