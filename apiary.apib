@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl-dev.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.1.4)
+# Spider Talentlink API Interface (v1.1.5)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -3258,6 +3258,50 @@ Remove an existing job alert or saved search.
 
 + Response 404 (application/json)
 **404 Error: not found.** If the job alert or saved search does not exist or has been deleted.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123456"
+                    }
+                },
+                "data":{
+                    "response":"not found"
+                }
+            }
+
+### Stop a job alert [DELETE /v1/alerts/stop/{?alert_id}]
+Stop/unsubscribe from an emailed job alert. This call doesn't require authentication.
+
++ Parameters
+
+    + alert_id: `123456` (number, optional) - the id of the emailed alert
+    
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "alert_id":"123456"
+                    }
+                },
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If the job alert does not exist.
 
     + Body
     
