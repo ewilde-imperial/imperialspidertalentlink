@@ -2054,17 +2054,15 @@ Fetch the sidebar navigation for the application process. This requires an appli
     
         ```html
             <div class="module">
-                <form method="post">
-                    <ol class="primary" id="secondary-nav">
-                        <!-- repeat for each step of application process -->
-                        <li>
-                            <button formaction="<!-- insert root_url parameter here -->/application/<!-- insert Imperial job id here -->/<!-- insert short job title here -->/step-<!-- insert application step number here -->/"<!-- if currently loaded --> class="active"<!-- end if -->>
-                                <!-- insert application step name here -->
-                            </button>
-                        </li>
-                        <!-- end repeat -->
-                    </ol>
-                </form>
+                <ol class="primary" id="secondary-nav">
+                    <!-- repeat for each step of application process -->
+                    <li>
+                        <button type="submit" form="main_form" formaction="<!-- insert root_url parameter here -->/application/<!-- insert Imperial job id here -->/<!-- insert short job title here -->/#step-<!-- insert application step number here -->/" name="step-<!-- insert application step number here -->" value="<!-- insert application step name here -->"<!-- if currently loaded --> class="active"<!-- end if -->>
+                            <!-- insert application step name here -->
+                        </button>
+                    </li>
+                    <!-- end repeat -->
+                </ol>
             </div>
         ```
         
