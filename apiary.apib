@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.2.1)
+# Spider Talentlink API Interface (v1.2.2)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -2083,93 +2083,6 @@ Fetch the sidebar navigation for the application process. This requires an appli
         ```html
             <!-- error: not found -->
         ```
-
-+ Request JSON Message
-
-    + Headers
-
-            Accept: application/json
-            ICL-APPLICATION-ID: (24-bit String)
-
-+ Response 200 (application/json)
-
-    + Headers
-
-            ICL_APPLICATION_ID: (24-bit String)
-    
-    + Body
-    
-            {
-                "meta":{
-                    "results":5,
-                    "param":{
-                        "id":"EX12345"
-                    }
-                },
-                "data":
-                    "steps":[
-                        {
-                            "name":"personal-details",
-                            "title":"Personal details",
-                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-1/",
-                            "active":false
-                        },{
-                            "name":"application-form",
-                            "title":"Application form",
-                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-2/",
-                            "active":true
-                        },{
-                            "name":"cover-letter",
-                            "title":"Cover letter",
-                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-3/",
-                            "active":false
-                        },{
-                            "name":"diversity-questionnaire",
-                            "title":"Diversity questionnaire",
-                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-4/",
-                            "active":false
-                        },{
-                            "name":"review-and-submit",
-                            "title":"Review and submit",
-                            "url":"<!-- insert root_url parameter here -->/application/<!-- insert Imperial job number here -->/<!-- insert short job title here -->/step-5/",
-                            "active":false
-                        }
-                    ]
-                }
-            }
-
-        
-+ Response 401 (application/json)
-**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "id":"EX12345"
-                    }
-                },
-                "data":{
-                    "response":"unauthorised"
-                }
-            }
-
-+ Response 404 (application/json)
-**404 Error: not found.** If a request is made for a job which does not exist.
-
-    + Body
-    
-            {
-                "meta":{
-                    "param":{
-                        "id":"This id doesnt exist"
-                    }
-                },
-                "data":{
-                    "response":"not found",
-                }
-            }
 
 ### Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
 Remove an existing job application from the system.
