@@ -561,19 +561,21 @@ This is used to fetch a file which is associated with a particular job, used for
 
     + Headers
     
-            Accept: application/octet-stream, text/html
+            Accept: */*, text/html
             
-+ Response 200 (text/html)
++ Response 200
 
     + Headers
     
-            Content-Disposition: attachment
+            Content-Type: <!-- file mime type -->
+            Content-Disposition: attachment; filename="<!-- file name -->"
             Content-Length: <!-- file size -->
+            Content-Transfer-Encoding: binary
     
     + Body
     
         ```
-            Binary file data data
+            Binary file data
         ```
 
 + Response 404 (text/html)
