@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.2.2)
+# Spider Talentlink API Interface (v1.3)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -551,7 +551,42 @@ This is used to fetch the full job descriptions and other detail for a particula
                     "response":"not found"
                 }
             }
+
+### Retrieve job attachment [GET /v1/job/attachment/{?id,file}]
+This is used to fetch a file which is associated with a particular job, used for job description documents etc.
+
++ Parameters
+
+    + id: `EX12345` (string, required) - the unique id for the job listing
+    + file: `Teaching+or+Senior+Teaching+Fellow+-+JD.doc` (string, required) - the unique name for the file associated with the job
+
++ Request
+
+    + Headers
     
+            Accept: application/octet-stream, text/html
+            
++ Response 200 (text/html)
+
+    + Headers
+    
+            Content-Disposition: attachment
+            Content-Length: <!-- file size -->
+    
+    + Body
+    
+        ```
+            Binary file data data
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** The requested job id or associated file does not exist or has been removed
+
+    + Body
+    
+        ```html
+            <!-- error: not found -->
+        ```
         
 
 # Group Authenticated
