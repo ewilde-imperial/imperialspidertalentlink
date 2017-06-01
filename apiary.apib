@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.3)
+# Spider Talentlink API Interface (v1.3.1)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -17,10 +17,10 @@ All API requests must also include a provisioned API key in the request header, 
 
 https://github.com/ewilde-imperial/imperialspidertalentlink/commits/master
 
-# Group Filters
+# Fetch [/v1/fetch/]
 API requests for filling static content, dependent on values from within the Talentlink system.
 
-## Populate Filters [/v1/fetch/filters/{?filter,parent}]
+## Filters [/v1/fetch/filters/{?filter,parent}]
 For each filter group, a list of available options must be retrieved from the server.
 
 + Parameters
@@ -151,27 +151,24 @@ Retrieve a list of values to be used in the search filter select boxes. Values l
                 }
             }
 
-# Group Listing
-This API handles the vacancy listings and provides a flexible mechanism for displaying vacancies accross the site, not just in the recruitment section.
+# Jobs [/v1/job/]
 
-## Jobs [/v1/job/]
-
-### Retrieve job listing [GET /v1/job/listing/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,faculty,department,start,quantity,sort_by,sort_order,root_url,alert_id}]
+## Retrieve job listing [GET /v1/job/listing/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,faculty,department,start,quantity,sort_by,sort_order,root_url,alert_id}]
 This is the main API request for searching, filtering and sorting jobs. It will also be used for pagination of search results. Filter parameters are just example, to be replaced. To retrieve a listing of jobs, including those which are only available internally, add the authentication token parameter (X-User-Auth) to the request.
 
-#### Examples
+### Examples
 
-##### Search for web development jobs in South Kensington or Silwood Park
+#### Search for web development jobs in South Kensington or Silwood Park
 ```
 /v1/job/listing/?keywords=web+development&location[]=6&location[]=5
 ```
 
-##### Search for jobs which pay more than £50,000 outside of the uk, sorted by top paying
+#### Search for jobs which pay more than £50,000 outside of the uk, sorted by top paying
 ```
 /v1/job/listing/?location[]=9&salary_min=50000&sort_by=salary&sort_order=desc
 ```
 
-##### Retrieve a saved search result
+#### Retrieve a saved search result
 ```
 /v1/job/listing/?alert_id=424442
 ```
@@ -363,7 +360,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                 }
             }
     
-### Retrieve job details [GET /v1/job/details/{?id,root_url}]
+## Retrieve job details [GET /v1/job/details/{?id,root_url}]
 This is used to fetch the full job descriptions and other detail for a particular job. If the job is for college internal users only, then the authentication token parameter (X-User-Auth) also needs to be included.
 
 + Parameters
@@ -552,7 +549,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                 }
             }
 
-### Retrieve job attachment [GET /v1/job/attachment/{?id,file}]
+## Retrieve job attachment [GET /v1/job/attachment/{?id,file}]
 This is used to fetch a file which is associated with a particular job, used for job description documents etc.
 
 + Parameters
@@ -588,14 +585,10 @@ This is used to fetch a file which is associated with a particular job, used for
             <!-- error: not found -->
         ```
         
-
-# Group Authenticated
-These API functions relate to the account creation process or require the user to be logged in with a valid token parameter in the request. 
-
-## Login [/v1/account/login/]
+# Login [/v1/account/login/]
 Retrieve the details required for the user to securely login to their account. On successful login, the server responds with a unique token in the header. This userid/token parameter should be passed for all authenticated requests.
 
-### Retrieve authentication [POST /v1/account/login/{?email,password}]
+## Retrieve authentication [POST /v1/account/login/{?email,password}]
 Allow the user to authenticate against either SAML or talentlink, depending on the email address used. In the response header for this request, if authentication is successful, is a authentication token parameter (X-User-Auth) in the form '{key}={token}'. This parameter must be appended to any authenticated requests, and acts as authentication and a primary key to determine the account to use.
 
 + Parameters
@@ -675,7 +668,7 @@ Allow the user to authenticate against either SAML or talentlink, depending on t
                 }
             }
 
-### Retrieve account activation [GET /v1/account/activate/{?token}]
+## Retrieve account activation [GET /v1/account/activate/{?token}]
 When the user has created a new account, they are sent an email authentication link. This request handles the email address activation.
 
 + Parameters
@@ -723,10 +716,10 @@ When the user has created a new account, they are sent an email authentication l
             <!-- error: service unavailable -->
         ```
 
-## Account [/v1/account/]
+# Account [/v1/account/]
 This is the API for user-level account management.
 
-### Create new account [POST /v1/account/create/{?email,password,confirmation,firstname,lastname,root_url}]
+## Create new account [POST /v1/account/create/{?email,password,confirmation,firstname,lastname,root_url}]
 Create a new user account with the minimum required fields.
 
 + Parameters
@@ -842,7 +835,7 @@ Create a new user account with the minimum required fields.
                 }
             }
 
-### Import new account [POST /v1/account/import/{?email,prefix,firstname,lastname,uid,validation}]
+## Import new account [POST /v1/account/import/{?email,prefix,firstname,lastname,uid,validation}]
 Import a new account after verifying identity using a single sign on service. This call will create a new account (unless one is already created), bypassing activation and return a valid session allowing the user to access their account.
 
 + Parameters
@@ -1032,22 +1025,22 @@ Import a new account after verifying identity using a single sign on service. Th
                 }
             }
 
-### Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,middlename,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
+## Edit account [POST /v1/account/edit/{?email,password,confirmation,prefix,firstname,middlename,lastname,phone,phone_alt,skype,address1,address2,address3,city,postcode,country,linkedin,xing}]
 View or make amendments or additions to stored account information. Optional fields may be omitted from the request, to avoid modifying stored data unnecessarily. To make changes to the account, the authentication token parameter (X-User-Auth) must be included, this also acts as the primary key to tell the system which account to make changes to.
 
-#### Examples
+### Examples
 
-##### Display the stored account values as an HTML form or JSON response
+#### Display the stored account values as an HTML form or JSON response
 ```
 /v1/account/edit/
 ```
 
-##### Change the preferred phone number for the account
+#### Change the preferred phone number for the account
 ```
 /v1/account/edit/?phone=0987654321
 ```
 
-##### Remove the linkedin address and change the last name on the account
+#### Remove the linkedin address and change the last name on the account
 ```
 /v1/account/edit/?linkedin=&lastname=Smith
 ```
@@ -1385,7 +1378,7 @@ View or make amendments or additions to stored account information. Optional fie
                 }
             }
             
-### Delete account [DELETE /v1/account/remove/]
+## Delete account [DELETE /v1/account/remove/]
 Remove the account and any linked data from talentlink. Any open applications should be deleted as part of the process. The authentication token parameter (X-User-Auth) must be included, this also acts as the primary key to tell the system which account to make changes to.
 
 + Request HTML Message
@@ -1491,7 +1484,7 @@ Remove the account and any linked data from talentlink. Any open applications sh
                 }
             }
 
-### Create new password request [POST /v1/account/reset_password/{?email}]
+## Create new password request [POST /v1/account/reset_password/{?email}]
 Allow the user to request a password reset url delivered to their email address. If this endpoint is called for an account which has not been activated, the activation token will be sent again to the email address.
 
 + Parameters
@@ -1558,10 +1551,10 @@ Allow the user to request a password reset url delivered to their email address.
                 }
             }
 
-## Application [/v1/application/]
+# Application [/v1/application/]
 This is the API for managing job applications. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
-### Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/{?root_url}]
+## Retrieve a list of incomplete applications [GET /v1/application/listing-incomplete/{?root_url}]
 Fetch a listing of incomplete job applications. Ordered by job status, closing date (asc)
 
 + Parameters
@@ -1655,7 +1648,7 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
                 }
             }
 
-### Retrieve a list of submitted applications [GET /v1/application/listing-submitted/{?root_url}]
+## Retrieve a list of submitted applications [GET /v1/application/listing-submitted/{?root_url}]
 Fetch a listing of submitted job applications. Ordered by last updated (desc).
 
 + Parameters
@@ -1756,7 +1749,7 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                 }
             }
 
-### Create a new application process [POST /v1/application/form/{?id,root_url}]
+## Create a new application process [POST /v1/application/form/{?id,root_url}]
 Start the process of creating a new application in talentlink. The rest of the application steps are handled by serializing the form returned from this request and POST back to the server. The application html output here is meant as an example, the actual output will be dependent on application form design from within the talentlink system.
 
 + Parameters
@@ -2063,7 +2056,7 @@ Start the process of creating a new application in talentlink. The rest of the a
             <!-- error: not found -->
         ```
 
-### Retrieve application progress [GET /v1/application/progress/{?id,root_url}]
+## Retrieve application progress [GET /v1/application/progress/{?id,root_url}]
 Fetch the sidebar navigation for the application process. This requires an application id (ICL_APPLICATION_ID) retrieved from the header of the /v1/application/form/ request, to identify which application form instance we require the navigation for. Note the difference between applicaton id requests (which use dash) and response (which use underscore)
 
 + Parameters
@@ -2119,7 +2112,7 @@ Fetch the sidebar navigation for the application process. This requires an appli
             <!-- error: not found -->
         ```
 
-### Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
+## Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
 Remove an existing job application from the system.
 
 + Parameters
@@ -2211,10 +2204,10 @@ Remove an existing job application from the system.
                 }
             }
 
-## Saved Jobs [/v1/saved/]
+# Saved Jobs [/v1/saved/]
 The API for managing a users saved jobs. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
-### Retrieve list of saved open jobs [GET /v1/saved/listing-open/{?root_url}]
+## Retrieve list of saved open jobs [GET /v1/saved/listing-open/{?root_url}]
 
 + Parameters
 
@@ -2318,7 +2311,7 @@ The API for managing a users saved jobs. For all requests the authentication tok
                 }
             }
             
-### Retrieve list of saved closed jobs [GET /v1/saved/listing-closed/]
+## Retrieve list of saved closed jobs [GET /v1/saved/listing-closed/]
 
 + Request HTML Message
 
@@ -2414,7 +2407,7 @@ The API for managing a users saved jobs. For all requests the authentication tok
                 }
             }
 
-### Retrieve list of saved expired jobs [GET /v1/saved/listing-expired/]
+## Retrieve list of saved expired jobs [GET /v1/saved/listing-expired/]
 Fetch a list of the saved jobs for a particular user. 
 
 + Request HTML Message
@@ -2502,7 +2495,7 @@ Fetch a list of the saved jobs for a particular user.
                 }
             }
 
-### Save job [POST /v1/saved/save/?id={id}]
+## Save job [POST /v1/saved/save/?id={id}]
 The user has clicked the save job button, add the job to the users saved jobs in their account.
 
 + Parameters
@@ -2594,7 +2587,7 @@ The user has clicked the save job button, add the job to the users saved jobs in
                 }
             }
 
-### Delete saved job [DELETE /v1/saved/remove/{?id}]
+## Delete saved job [DELETE /v1/saved/remove/{?id}]
 Remove a link to a saved job vacancy on the users account.
 
 + Parameters
@@ -2686,10 +2679,10 @@ Remove a link to a saved job vacancy on the users account.
                 }
             }
 
-## Job alerts / Saved searches [/v1/alerts/]
+# Job alerts / Saved searches [/v1/alerts/]
 The API for managing a users job alerts / saved searches. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
 
-### Retrieve list of job alerts / saved searches [GET /v1/alerts/listing/{?root_url}]
+## Retrieve list of job alerts / saved searches [GET /v1/alerts/listing/{?root_url}]
 Fetch a list of job alerts and/or saved searches. For the listing requests, the basic job information is also returned to reduce the number of calls to the API. Results should be ordered by frequency then alert_id (desc) so new alerts appear first.
 
 + Parameters
@@ -2804,12 +2797,12 @@ Fetch a list of job alerts and/or saved searches. For the listing requests, the 
                 }
             }
 
-### Create new job alert / saved search [POST /v1/alerts/create/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
+## Create new job alert / saved search [POST /v1/alerts/create/{?keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
 Add a new job alert or saved search to the users account. It is assumed that the recipient email address will be the one stored by the system.
 
-#### Example
+### Example
 
-##### Create the example weekly job alert
+#### Create the example weekly job alert
 ```
 /v1/alerts/create/?keywords=lecturer&location[]=2&location[]=5&salary_min=40000&salary_max=100000&name=lecturer+jobs+in+Hammersmith+or+Silwood+Park&frequency=weekly
 ```
@@ -2961,7 +2954,7 @@ Add a new job alert or saved search to the users account. It is assumed that the
                 }
             }
 
-### Edit a job alert / saved search [POST /v1/alerts/edit/{?alert_id,keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
+## Edit a job alert / saved search [POST /v1/alerts/edit/{?alert_id,keywords,location,category,subcategory,job_type,salary_min,salary_max,name,frequency}]
 Make amendments to a job alert or saved search.
 
 + Parameters
@@ -3126,7 +3119,7 @@ Make amendments to a job alert or saved search.
                 }
             }
 
-### Delete job alert [DELETE /v1/alerts/remove/{?alert_id}]
+## Delete job alert [DELETE /v1/alerts/remove/{?alert_id}]
 Remove an existing job alert or saved search.
 
 + Parameters
@@ -3218,7 +3211,7 @@ Remove an existing job alert or saved search.
                 }
             }
 
-### Stop a job alert [GET /v1/alerts/stop/{?alert_id}]
+## Stop a job alert [GET /v1/alerts/stop/{?alert_id}]
 Stop/unsubscribe from an emailed job alert. This call doesn't require authentication.
 
 + Parameters
