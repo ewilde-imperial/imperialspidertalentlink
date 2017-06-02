@@ -708,7 +708,16 @@ When the user has created a new account, they are sent an email authentication l
         ```html
             <!-- error: conflict -->
         ```
+        
++ Response 501 (text/html)
+**501 Error: not implemented.** If a call is made to this endpoint with an email address which is _used_ by talentlink, but not in Drupal.
 
+    + Body
+    
+        ```html
+            <!-- error: not implemented -->
+        ```
+        
 + Response 503 (text/html)
 **503 Error: service unavailable.** If a call is made to this endpoint when the talentlink system is unavailable.
 
