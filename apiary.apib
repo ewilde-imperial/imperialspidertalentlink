@@ -1581,7 +1581,7 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
                     <ul class="listing incomplete-listing">
                         <!-- repeat for all incomplete applications -->
                         <li class="application listing-item">
-                            <a href="<!-- insert root_url here -->/application/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->">
+                            <a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->">
                                 <h3><!-- insert job title here --></h3>
                                 <ul class="application-information">
                                     <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert Imperial id here --></span></li>
@@ -1591,6 +1591,7 @@ Fetch a listing of incomplete job applications. Ordered by job status, closing d
                             </a>
                             <div class="controls">
                                 <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->">remove</button>
+                                <a class="btn small" href="<!-- insert root_url parameter here -->/application/<!-- insert Imperial job id here -->/<!-- insert shortened, url friendly job title here -->/">continue</a>
                             </div>
                         </li>
                         <!-- end repeat -->
