@@ -1599,6 +1599,15 @@ Allow a non-Imperial user to update their password in the system. The authentica
             <!-- error: unauthorised -->
         ```
 
++ Response 404 (text/html)
+**404 Error: not found.** If a call is made to this endpoint for an account which uses LDAP authentication.
+    
+    + Body
+
+        ```html
+            <!-- error: not found -->
+        ```
+
 + Request JSON Message
 
     + Headers
@@ -1657,6 +1666,24 @@ Allow a non-Imperial user to update their password in the system. The authentica
                 },
                 "data":{
                     "response":"unauthorised"
+                }
+            }
+
++ Response 404 (application/json)
+**404 Error: not found.** If a call is made to this endpoint for an account which uses LDAP authentication.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "password": true,
+                        "confirmation": true
+                    }
+                },
+                "data":{
+                    "response":"not found",
+                    "message":"this account is authenticated via LDAP"
                 }
             }
 
