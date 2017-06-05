@@ -1571,6 +1571,10 @@ Allow a non-Imperial user to update their password in the system. The authentica
             
 + Response 200 (text/html)
     
+    + Headers
+    
+            X-User-Auth: {key}={token}
+    
     + Body
 
         ```html
@@ -1603,6 +1607,10 @@ Allow a non-Imperial user to update their password in the system. The authentica
 
 + Response 200 (application/json)
 
+    + Headers
+    
+            X-User-Auth: {key}={token}
+            
     + Body
     
             {
