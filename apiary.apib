@@ -1577,6 +1577,15 @@ Allow a non-Imperial user to update their password in the system. The authentica
             <!-- success -->
         ```
 
++ Response 400 (text/html)
+**400 Error: bad request.** If a call is made to this endpoint without matching confirmation.
+    
+    + Body
+
+        ```html
+            <!-- error: bad request -->
+        ```
+
 + Response 401 (text/html)
 **401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token for an activated account.
     
@@ -1599,11 +1608,30 @@ Allow a non-Imperial user to update their password in the system. The authentica
             {
                 "meta":{
                     "param":{
-                        "email":"e.wilde@imperial.ac.uk"
+                        "password": true,
+                        "confirmation": true
                     }
                 },
                 "data":{
                     "response":"success"
+                }
+            }
+
++ Response 400 (application/json)
+**400 Error: bad request.** If a call is made to this endpoint without matching confirmation.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "password": true,
+                        "confirmation": true
+                    }
+                },
+                "data":{
+                    "response":"invalid",
+                    "message":"fields failed validation"
                 }
             }
 
@@ -1615,7 +1643,8 @@ Allow a non-Imperial user to update their password in the system. The authentica
             {
                 "meta":{
                     "param":{
-                        "email":"e.wilde@imperial.ac.uk"
+                        "password": true,
+                        "confirmation": true
                     }
                 },
                 "data":{
