@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4)
+# Spider Talentlink API Interface (v1.4.1)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1806,23 +1806,25 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
         ```html
             <div class="submitted">
                 <h2>Submitted</h2>
-                <ul class="listing submitted-listing">
-                    <!-- repeat for all submitted applications -->
-                    <li class="application listing-item">
-                        <a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->">
-                            <h3><!-- insert job title here --></h3>
-                            <ul class="application-information">
-                                <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert Imperial id here --></span></li>
-                                <li class="date-submitted"><span class="label">Submitted: </span><span class="value"><!-- insert date submitted (php date format 'j F Y') here --></span></li>
-                                <li class="status"><span class="label">Status: </span><span class="value"><!-- insert job status here --></span></li>
-                            </ul>
-                        </a>
-                        <div class="controls">
-                            <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->">withdraw</button>
-                        </div>
-                    </li>
-                    <!-- end repeat -->
-                </ul>
+                <form method="post">
+                    <ul class="listing submitted-listing">
+                        <!-- repeat for all submitted applications -->
+                        <li class="application listing-item">
+                            <a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->">
+                                <h3><!-- insert job title here --></h3>
+                                <ul class="application-information">
+                                    <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert Imperial id here --></span></li>
+                                    <li class="date-submitted"><span class="label">Submitted: </span><span class="value"><!-- insert date submitted (php date format 'j F Y') here --></span></li>
+                                    <li class="status"><span class="label">Status: </span><span class="value"><!-- insert job status here --></span></li>
+                                </ul>
+                            </a>
+                            <div class="controls">
+                                <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->">withdraw</button>
+                            </div>
+                        </li>
+                        <!-- end repeat -->
+                    </ul>
+                </form>
             </div>
         ```
 
