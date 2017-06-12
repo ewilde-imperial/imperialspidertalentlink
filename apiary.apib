@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.3.2)
+# Spider Talentlink API Interface (v1.4)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -2248,6 +2248,63 @@ Fetch the sidebar navigation for the application process. This requires an appli
         ```html
             <!-- error: not found -->
         ```
+
+## Extend an application session [GET /v1/application/extend/]
+Keep-alive for the application process, to avoid talentlink timeout when completing the form.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            ICL-APPLICATION-ID: (24-bit String)
+
++ Response 200 (text/html)
+
+    + Body
+    
+        ```html
+            <!-- success -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- error: unauthorised -->
+        ```
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+            ICL-APPLICATION-ID: (24-bit String)
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"success"
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
 
 ## Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
 Remove an existing job application from the system.
