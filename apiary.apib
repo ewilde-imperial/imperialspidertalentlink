@@ -2275,6 +2275,15 @@ Keep-alive for the application process, to avoid talentlink timeout when complet
         ```html
             <!-- error: unauthorised -->
         ```
+        
++ Response 500 (text/html)
+**500 Error: internal server error.** If there is an error returned from the talentlink server when renewing the session.
+
+    + Body
+    
+        ```html
+            <!-- error: died with unexpected response {error message} -->
+        ```
 
 + Request JSON Message
 
@@ -2303,6 +2312,19 @@ Keep-alive for the application process, to avoid talentlink timeout when complet
                 "meta":{},
                 "data":{
                     "response":"unauthorised"
+                }
+            }
+
++ Response 500 (application/json)
+**500 Error: internal server error.** If there is an error returned from the talentlink server when renewing the session.
+
+    + Body
+    
+            {
+                "meta":{},
+                "data":{
+                    "response":"unexpected response /* insert error message */",
+                    "body":"/* insert error message body from talentlink */"
                 }
             }
 
