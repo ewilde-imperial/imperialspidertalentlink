@@ -1807,7 +1807,7 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
             <div class="submitted">
                 <h2>Submitted</h2>
                 <form method="post">
-                    <ul class="listing submitted-listing">
+                    <ul class="listing submitted-listing<!-- if application is withdrawn --> withdrawn <!-- end if -->">
                         <!-- repeat for all submitted applications -->
                         <li class="application listing-item">
                             <a href="<!-- insert root_url here -->/description/<!-- insert Imperial id here -->/<!-- insert shortened job title here -->">
@@ -1819,7 +1819,7 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                                 </ul>
                             </a>
                             <div class="controls">
-                                <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->">withdraw</button>
+                                <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->"<!-- if application is withdrawn --> disabled <!-- end if -->>withdraw</button>
                             </div>
                         </li>
                         <!-- end repeat -->
