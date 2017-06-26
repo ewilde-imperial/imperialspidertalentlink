@@ -685,10 +685,6 @@ Allow for temporary login using a server generated token, rather than login and 
     
 + Response 200 (application/json)
 
-    + Headers
-
-            X-User-Auth: {key}={token}
-    
     + Body
     
             {
@@ -716,6 +712,22 @@ Allow for temporary login using a server generated token, rather than login and 
                 },
                 "data":{
                     "response":"unauthorised",
+                }
+            }
+
++ Response 403 (application/json)
+**403 Error: forbidden.** If a call is made to this endpoint for an account which is suspended, not activated or is an account authenticated via ldap.
+
+    + Body
+    
+            {
+                "meta":{
+                    "param":{
+                        "token":true
+                    }
+                },
+                "data":{
+                    "response":"forbidden",
                 }
             }
 
