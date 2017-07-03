@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.2)
+# Spider Talentlink API Interface (v1.4.3)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -437,6 +437,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                     <ul class="row">
                         <li class="data department"><span class="label">Department</span> <span class="value"><!-- insert department here --></span></li>
                         <li class="data category"><span class="label">Category</span> <span class="value" itemprop="occupationalCategory"><!-- insert category here --> / <!-- insert subcategory here --></span></li>
+                        <!-- if visibility is 'Redeployment' --><li class="data visibility"><span class="label">Open to</span><span class="value">Redeployment candidates only</span></li><!-- end if -->
                     </ul>
                 </div>
                 <!-- end job information banner -->
