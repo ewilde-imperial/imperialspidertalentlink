@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.4)
+# Spider Talentlink API Interface (v1.4.5)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -2433,6 +2433,43 @@ Keep-alive for the application process, to avoid talentlink timeout when complet
                     "body":"/* insert error message body from talentlink */"
                 }
             }
+
+## Retrieve application attachment [GET /v1/application/download/{?document_id}]
+This is used to fetch a file which has been uploaded by the user as part of the application process.
+
++ Parameters
+
+    + document_id: `EX12345` (string, required) - the unique id for the file attachment on a submitted job
+
++ Request
+
+    + Headers
+    
+            Accept: */*, text/html
+            
++ Response 200
+
+    + Headers
+    
+            Content-Type: <!-- file mime type -->
+            Content-Disposition: attachment; filename="<!-- file name -->"
+            Content-Length: <!-- file size -->
+            Content-Transfer-Encoding: binary
+    
+    + Body
+    
+        ```
+            Binary file data
+        ```
+
++ Response 404 (text/html)
+**404 Error: not found.** The requested job id or associated file does not exist or has been removed
+
+    + Body
+    
+        ```html
+            <!-- error: not found -->
+        ```
 
 ## Delete an application [DELETE /v1/application/remove/{?talentlink_id}]
 Remove an existing job application from the system.
