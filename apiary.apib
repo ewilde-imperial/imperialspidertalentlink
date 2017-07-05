@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.3)
+# Spider Talentlink API Interface (v1.4.4)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1901,6 +1901,7 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                             </a>
                             <div class="controls">
                                 <button class="btn reverse small remove" name="talentlink_id" value="<!-- insert talentlink id here -->"<!-- if application is withdrawn --> disabled <!-- end if -->>withdraw</button>
+                                <!-- if application is not withdrawn --><a class="btn small" href="<!-- insert root_url parameter here -->/account/applications/?action=download&document_id=<!-- insert document id for 'document-pack' here -->">download</a><!-- end if -->
                             </div>
                         </li>
                         <!-- end repeat -->
@@ -1942,6 +1943,17 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                         "reference":"/* insert Imperial job id here */",
                         "close_date":"/* insert job close date here */",
                         "talentlink_id":"/* insert id from talentlink here */",
+                        "documents":[
+                            {
+                                "creation_date":"/* insert date (format: DATE_ATOM) */",
+                                "description":"/* insert desciption or filename here */",
+                                "document_type":"/* 'resume': for an uploaded CV, 'other': for any other uploaded files, 'document-pack': for the combined candidate pack including all documents parsed into PDF */",
+                                "id":"/* insert document id here */",
+                                "name":"/* insert filename here /*"
+                            }
+                            
+                            ...
+                        ]
                     },
                     {
                         "date_modified":"/* insert date application was submitted here */",
@@ -1951,6 +1963,17 @@ Fetch a listing of submitted job applications. Ordered by last updated (desc).
                         "reference":"/* insert Imperial job id here */",
                         "close_date":"/* insert job close date here */",
                         "talentlink_id":"/* insert id from talentlink here */",
+                        "documents":[
+                            {
+                                "creation_date":"/* insert date (format DATE_ATOM) */",
+                                "description":"/* insert desciption or filename here */",
+                                "document_type":"/* 'resume': for an uploaded CV, 'other': for any other uploaded files, 'document-pack': for the combined candidate pack including all documents parsed into PDF */",
+                                "id":"/* insert document id here */",
+                                "name":"/* insert filename here /*"
+                            }
+                            
+                            ...
+                        ]
                     }
                 ]
             }
