@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.5)
+# Spider Talentlink API Interface (v1.4.6)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -434,6 +434,11 @@ This is used to fetch the full job descriptions and other detail for a particula
                             <span class="benefits">plus&nbsp;<a class="benefits" href="/job-applicants/staff-benefits/">benefits</a></span>
                             <meta itemprop="salaryCurrency" content="GBP">
                         </li>
+                        <!-- if allowance is set -->
+                        <li class="data allowance">
+                            <span class="label">Allowance</span> <span class="value"><!-- insert allowance here, formatted as currency; e.g. £1,250 --></span>
+                        </li>
+                        <!-- end if -->
                     </ul>
                     <ul class="row">
                         <li class="data department"><span class="label">Department</span> <span class="value"><!-- insert department here --></span></li>
@@ -516,6 +521,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                     "location":"/* insert job location here */",
                     "type":"/* insert job type here */",
                     "salary":"/* insert job salary range here */",
+                    "allowance":"/* insert allowance here */",
                     "category":"/* insert job category here */",
                     "subcategory":"/* insert job subcategory here */",
                     "description":"/* insert full job description here */",
