@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.6)
+# Spider Talentlink API Interface (v1.4.7)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -234,8 +234,9 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                                 <li class="department"><span class="label">Department: </span><span class="value"><!-- insert category here --></span></li>
                                 <li class="location"><span class="label">Location: </span><span class="value"><!-- insert location here --></span></li>
                                 <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert job type here --></span></li>
+                                <!-- if contract type is not Variable --><li class="contract"><span class="label">Contract: </span><span class="value"><!-- insert contract type here --></span></li><!-- end if -->
                                 <li class="salary"><span class="label">Salary: </span><span class="value"><!-- insert salary range here --></span></li>
-                                <!-- if visibility is 'Redeplyoment' --><li class="visibility"><span class="label">Open to: </span><span class="value">Redeployment candidates only</span></li><!-- end if -->
+                                <!-- if visibility is Redeplyoment --><li class="visibility"><span class="label">Open to: </span><span class="value">Redeployment candidates only</span></li><!-- end if -->
                             </ul>
                         </div>
                         <div class="job-actions">
@@ -309,6 +310,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "department":"/* insert job department string here */",
                         "location":"/* insert job location here */",
                         "type":"/* insert job type here */",
+                        "contract": "/* insert contract type here */",
                         "salary":"/* insert job salary range here */",
                         "category":"/* insert job category here */",
                         "subcategory":"/* insert job subcategory here */",
@@ -323,6 +325,7 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                         "department":"/* insert job department string here */",
                         "location":"/* insert job location here */",
                         "type":"/* insert job type here */",
+                        "contract": "/* insert contract type here */",
                         "salary":"/* insert job salary range here */",
                         "category":"/* insert job category here */",
                         "subcategory":"/* insert job subcategory here */",
@@ -425,10 +428,10 @@ This is used to fetch the full job descriptions and other detail for a particula
                 <div class="row info job-info banner">
                     <h2 class="sr-only">Key information about the role</h2>
                     <ul class="column">
-                        <li class="data location" itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"><span class="label">Location</span> <span class="value" itemprop="address"><!-- insert location address here --></span> <a class="map" itemprop="hasMap" href="https://www.google.co.uk/maps/search/<!-- insert url encoded location address here -->/">(map)</a></li>
+                        <li class="data location" itemprop="jobLocation" itemscope itemtype="http://schema.org/Place"><span class="label">Location</span> <span class="value" itemprop="address"><!-- insert location address here --></span> <a class="map" itemprop="hasMap" href="https://www.google.co.uk/maps/search/<!-- insert url encoded location address here -->/" target="_blank">(map)</a></li>
                     </ul>
                     <ul class="column">
-                        <li class="data contract"><span class="label">Position type</span> <span class="value" itemprop="employmentType"><!-- insert job type here --></span></li>
+                        <li class="data contract"><span class="label">Position type</span> <span class="value" itemprop="employmentType"><!-- insert job type/contract type here --></span></li>
                         <li class="data salary">
                             <span class="label">Salary</span> <span class="value" itemprop="baseSalary"><!-- insert salary range here --></span>
                             <span class="benefits">plus&nbsp;<a class="benefits" href="/job-applicants/staff-benefits/">benefits</a></span>
@@ -520,6 +523,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                     "department":"/* insert job department here */",
                     "location":"/* insert job location here */",
                     "type":"/* insert job type here */",
+                    "contract":"/* insert contract type here */",
                     "salary":"/* insert job salary range here */",
                     "allowance":"/* insert allowance here */",
                     "category":"/* insert job category here */",
