@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.8)
+# Spider Talentlink API Interface (v1.4.9)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -218,27 +218,30 @@ This is the main API request for searching, filtering and sorting jobs. It will 
                 <!-- begin repeating result item -->
                 <li class="imperial_single_result job<!-- if internal or redeployment visibility --> internal/redeployment<!-- end if -->" data-id="<!-- insert Imperial job id here -->">
                     <div class="row">
-                        <h3 class="job-title"><!-- insert job title here --></h3>
-                        <div class="job-description">
-                            <div class="job-summary">
-                                <p><!-- insert job summary here (450 characters max), adding ellipsis when truncated --></p>
-                            </div>
-                            <div class="job-more-information">
-                                <a href="<!-- insert root_url parameter here -->/description/<!-- insert Imperial job id here -->/<!-- insert shortened, url friendly job title here -->" class="job-link">More information</a>
+                        <div class="col">
+                            <h3 class="job-title"><!-- insert job title here --></h3>
+                            <div class="job-description">
+                                <div class="job-summary">
+                                    <p><!-- insert job summary here (450 characters max), adding ellipsis when truncated --></p>
+                                </div>
+                                <div class="job-more-information">
+                                    <a href="<!-- insert root_url parameter here -->/description/<!-- insert Imperial job id here -->/<!-- insert shortened, url friendly job title here -->" class="job-link">More information</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="job-information">
-                            <ul>
-                                <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert job reference/id here --></span></li>
-                                <li class="close-date"><span class="label">Closing date: </span><span class="value"><!-- insert job closing date here --></span></li>
-                                <li class="department"><span class="label">Department: </span><span class="value"><!-- insert category here --></span></li>
-                                <li class="location"><span class="label">Location: </span><span class="value"><!-- insert location here --></span></li>
-                                <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert job type here --></span></li>
-                                <!-- if contract type is not Variable --><li class="contract"><span class="label">Contract: </span><span class="value"><!-- insert contract type here --></span></li><!-- end if -->
-                                <li class="salary"><span class="label">Salary: </span><span class="value"><!-- insert salary range here --></span></li>
-                                <!-- if allowance is set --><li class="allowance"><span class="label">Allowance: </span><span class="value"><!-- insert allowance here --></span></li><!-- end if -->
-                                <!-- if visibility is Redeplyoment --><li class="visibility"><span class="label">Open to: </span><span class="value">Redeployment candidates only</span></li><!-- end if -->
-                            </ul>
+                        <div class="col">
+                            <div class="job-information">
+                                <ul>
+                                    <li class="reference"><span class="label">Reference: </span><span class="value"><!-- insert job reference/id here --></span></li>
+                                    <li class="close-date"><span class="label">Closing date: </span><span class="value"><!-- insert job closing date here --></span></li>
+                                    <li class="department"><span class="label">Department: </span><span class="value"><!-- insert category here --></span></li>
+                                    <li class="location"><span class="label">Location: </span><span class="value"><!-- insert location here --></span></li>
+                                    <li class="type"><span class="label">Job type: </span><span class="value"><!-- insert job type and contract type here --></span></li>
+                                    <li class="salary"><span class="label">Salary: </span><span class="value"><!-- insert salary range here --></span></li>
+                                    <!-- if allowance is set --><li class="allowance"><span class="label">Allowance: </span><span class="value"><!-- insert allowance here --></span></li><!-- end if -->
+                                    <!-- if visibility is Redeplyoment --><li class="visibility"><span class="label">Open to: </span><span class="value">Redeployment candidates only</span></li><!-- end if -->
+                                </ul>
+                            </div>
                         </div>
                         <div class="job-actions">
                             <a href="<!-- insert root_url parameter here -->/account/saved-jobs/?action=save&id=<!-- insert Imperial job id here -->" class="btn reverse">Save this job</a>
