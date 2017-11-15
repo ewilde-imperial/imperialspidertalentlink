@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.10)
+# Spider Talentlink API Interface (v1.4.11)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -401,7 +401,6 @@ This is used to fetch the full job descriptions and other detail for a particula
 
             <div class="module job-description<!-- if internal or redeployment visibility --> internal/redeployment<!-- end if -->" itemscope itemtype="http://schema.org/JobPosting">
                 <meta itemprop="title" content="<!-- insert job title here -->">
-                <meta itemprop="datePosted" content="<!-- insert job open date here -->">
 
                 <!-- begin call to action area -->
                 <div class="highlight">
@@ -424,6 +423,7 @@ This is used to fetch the full job descriptions and other detail for a particula
                     <h2 class="sr-only">Job listing information</h2>
                     <ul>
                         <li class="data reference"><span class="label">Reference</span> <span class="value"><!-- insert Imperial job reference here --></span></li>
+                        <li class="data posted"><span class="label">Date posted</span> <span class="value" itemprop="datePosted"><!-- insert job open date here (php date format 'j F Y') --></span></li>
                         <li class="data closing"><span class="label">Closing date</span> <span class="value" itemprop="validThrough"><!-- insert closing date here (php date format 'j F Y') --></span></li>
                     </ul>
                 </div>
