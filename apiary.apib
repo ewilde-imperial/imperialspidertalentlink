@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.13)
+# Spider Talentlink API Interface (v1.4.14)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1171,7 +1171,7 @@ View or make amendments or additions to stored account information. Optional fie
     + country: `United Kingdom` (string, optional) - the users country
     + linkedin: `https://uk.linkedin.com/in/edwilde`(string, optional) - the users linkedin profile address
     + xing: `https://www.xing.com/profile/edwilde` (string, optional) - the users xing profile address
-    + talentpool: `on` (boolean, optional) - if the user has given consent for their applications to be shared
+    + talentpool: `on` (boolean, optional) - if the user has given consent for their applications to be shared, a null value is returned if the user has not submitted a job application yet
     + _talentpool: `true` (boolean, optional) - if the form has this parameter set and the talentpool variable is missing, then talentpool is set to false. Otherwise talentpool is not changed if missing.
 
 + Request HTML Message
@@ -1335,10 +1335,10 @@ View or make amendments or additions to stored account information. Optional fie
             
             <fieldset>
                 <legend>Permissions</legend>
-                <div class="field check">
+                <div class="field check<!-- if talentpool is null--> disabled<!-- end if null -->">
                     <label for="talentpool">
-                        <input type="checkbox" id="talentpool" name="talentpool"<!-- if true --> checked<!--end if true -->>
-                        Please tick this box if you are you happy for us to share your application details with other Imperial&nbsp;College&nbsp;London staff, in order to suggest relevant jobs based on your skill set.
+                        <input type="checkbox" id="talentpool" name="talentpool"<!-- if true and talentpool is not null --> checked<!--end if true --><!-- if talentpool is null --> disabled<!-- end if null-->>
+                        Please tick this box if you are you happy for us to share your submitted job application details with other Imperial&nbsp;College&nbsp;London staff, in order to suggest relevant jobs based on your skill set.
                     </label>
                 </div>
                 <input type="hidden" name="_talentpool" value="true" />
