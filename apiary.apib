@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.14)
+# Spider Talentlink API Interface (v1.4.15)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1800,6 +1800,59 @@ Allow a non-Imperial user to update their password in the system. The authentica
                     "message":"this account is authenticated via LDAP"
                 }
             }
+
+## Retrieve talentpool consent status [GET /v1/account/consent]
+Anyone who applies for a job has the ability to give or withdraw consent for their job application information to be used internally to suggest other jobs they may be interested in. This gives access to view the current users consent preference, either 'accepted' (true), 'withdrawn' (false) or 'unavailable' (null) if the user has not submitted an application.
+
++ Request HTML Message
+
+    + Headers
+
+            Accept: text/html
+            
++ Response 200 (text/html)
+
+    + Body
+        ```html
+            <!-- withdrawn -->
+        ```
+
++ Response 401 (text/html)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+        ```html
+            <!-- error: unauthorised -->
+        ```
+
++ Request JSON Message
+    
+    + Headers
+        
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "data": {
+                    "consent": true
+                }
+            }
+
++ Response 401 (application/json)
+**401 Error: unauthorised.** If a call is made to this endpoint without a valid authentication token.
+
+    + Body
+    
+            {
+                "data":{
+                    "response":"unauthorised"
+                }
+            }
+
 
 # Application [/v1/application/]
 This is the API for managing job applications. For all requests the authentication token parameter (X-User-Auth) is used as a primary key to determine the user requesting results.
