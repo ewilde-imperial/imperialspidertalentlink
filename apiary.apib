@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://icl.spideronline.co.uk
 
-# Spider Talentlink API Interface (v1.4.15)
+# Spider Talentlink API Interface (v1.4.16)
 
 This API document outlines the required requests and responses for seemlessly integrating the Spider / Talentlink API into the Imperial College London website.
 
@@ -1335,13 +1335,15 @@ View or make amendments or additions to stored account information. Optional fie
             
             <fieldset>
                 <legend>Permissions</legend>
-                <div class="field check<!-- if talentpool is null--> disabled<!-- end if null -->">
+                <div class="field check<!-- if talentpool is null --> disabled<!-- end if null -->">
                     <label for="talentpool">
-                        <input type="checkbox" id="talentpool" name="talentpool"<!-- if true and talentpool is not null --> checked<!--end if true --><!-- if talentpool is null --> disabled<!-- end if null-->>
+                        <input type="checkbox" id="talentpool" name="talentpool"<!-- if true and talentpool is not null --> checked<!--end if true --><!-- if talentpool is null --> disabled<!-- end if null -->>
                         Please tick this box if you are you happy for us to share your submitted job application details with other Imperial&nbsp;College&nbsp;London staff, in order to suggest relevant jobs based on your skill set.
                     </label>
                 </div>
+                <!-- if talentpool is not null -->
                 <input type="hidden" name="_talentpool" value="true" />
+                <!-- end if talentpool is not null -->
             </fieldset>
         ```
 
