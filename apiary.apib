@@ -2386,6 +2386,15 @@ Start the process of creating a new application in talentlink. The rest of the a
         ```html
             <!-- error: not found -->
         ```
+        
++ Response 409 (text/html)
+**409 Error: conflict.** If a request is made for a job for which the applicant has already been rejected.
+
+    + Body
+    
+        ```html
+            <!-- error: conflict -->
+        ```
 
 ## Retrieve application progress [GET /v1/application/progress/{?id,root_url}]
 Fetch the sidebar navigation for the application process. This requires an application id (ICL_APPLICATION_ID) retrieved from the header of the /v1/application/form/ request, to identify which application form instance we require the navigation for. Note the difference between applicaton id requests (which use dash) and response (which use underscore)
